@@ -11,10 +11,9 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: repair_service
     healthcheck:
-      test: pg_isready -U $POSTGRES_USER -d $POSTGRES_DB
+      test: ["CMD-SHELL", "pg_isready -U postgres -d repair_service"]
       interval: 10s
       timeout: 5s
-      start_period: 10s
       retries: 5
     networks:
       - my_network  # Подключение к сети
@@ -42,7 +41,9 @@ services:
       start_period: 10s
       retries: 5
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+
     entrypoint: /bin/sh -c "chmod 600 /pgadmin4/pgpass; /entrypoint.sh;"
     networks:
       - my_network  # Подключение к сети
