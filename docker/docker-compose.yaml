@@ -17,8 +17,8 @@ services:
       retries: 5
     networks:
       - my_network  # Подключение к сети
-    env_file:
-      - ../.env
+  #    env_file:
+  #      - ../src/main/resources/.env
 
   pgadmin:
     image: dpage/pgadmin4:8.14.0
@@ -47,8 +47,22 @@ services:
     entrypoint: /bin/sh -c "chmod 600 /pgadmin4/pgpass; /entrypoint.sh;"
     networks:
       - my_network  # Подключение к сети
-    env_file:
-      - ../.env
+  #    env_file:
+  #      - ../src/main/resources/.env
+
+
+  liquibase:
+    container_name: liquibase
+    image: liquibase/liquibase:4.31-alpine
+    command: liquibase update --url=jdbc:postgresql://postgres:5432/repair_service --username=postgres --password=123 --changelog-file=/changeLog-master.yaml
+    volumes:
+      - ./../src/main/resources/db/changelog/db.changelog-master.yaml:/liquibase/changeLog-master.yaml
+      - ./../src/main/resources/db/changelog/v.1.0.0/.:/liquibase/v.1.0.0/
+    networks:
+      - my_network
+    depends_on:
+      - postgres
+
 
 volumes:
   postgres_data:
