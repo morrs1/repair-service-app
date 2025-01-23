@@ -13,4 +13,6 @@ spring:
       ddl-auto: validate
     show-sql: true
     open-in-view: false
-
+logging:
+  file:
+    path: ./../../../logs/
