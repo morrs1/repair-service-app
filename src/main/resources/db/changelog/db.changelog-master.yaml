@@ -3,3 +3,5 @@ databaseChangeLog:
       file: v.1.0.0/create-tables.yaml
   - include:
       file: v.1.0.0/init-insert.yaml
+  - include:
+      file: v.1.0.0/fix-constraint-phone-number.sql
