@@ -1,14 +1,18 @@
 package com.example.repairserviceapp.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "orders_statuses")
+@Setter
+@Getter
+@ToString
 public class Status {
 
     @Id
@@ -17,4 +21,8 @@ public class Status {
 
     @Column(name = "status_name")
     private String name;
+
+    @OneToMany(mappedBy = "status")
+    @ToString.Exclude
+    private List<Order> orders;
 }
