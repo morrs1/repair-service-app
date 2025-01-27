@@ -1,15 +1,19 @@
 package com.example.repairserviceapp.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "components_warehouse")
+@Getter
+@Setter
+@ToString
 public class ComponentsWarehouse {
 
     @Id
@@ -25,4 +29,7 @@ public class ComponentsWarehouse {
     @Column(name = "unit_cost")
     private BigDecimal unitCost;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "componentsWarehouse")
+    @ToString.Exclude
+    private List<OrderOfComponents> ordersOfComponents;
 }
