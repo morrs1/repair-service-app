@@ -1,14 +1,18 @@
 package com.example.repairserviceapp.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "posts")
+@Setter
+@Getter
+@ToString
 public class Post {
 
     @Id
@@ -18,4 +22,7 @@ public class Post {
     @Column(name = "post_name")
     private String postName;
 
+    @OneToMany(mappedBy="post")
+    @ToString.Exclude
+    private List<Master> masters;
 }
