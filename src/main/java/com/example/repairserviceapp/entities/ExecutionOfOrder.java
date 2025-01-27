@@ -1,16 +1,20 @@
 package com.example.repairserviceapp.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "order_executions")
+@Getter
+@Setter
+@ToString
 public class ExecutionOfOrder {
 
     @Id
@@ -31,5 +35,9 @@ public class ExecutionOfOrder {
 
     @Column(name = "total_cost")
     private BigDecimal totalCost;
+
+    @OneToMany(mappedBy="executionOfOrder")
+    @ToString.Exclude
+    private List<OrderOfComponents> ordersOfComponents;
 
 }
