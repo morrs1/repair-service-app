@@ -1,11 +1,18 @@
 package com.example.repairserviceapp.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "masters_list")
+@Setter
+@Getter
+@ToString
 public class Master {
 
     @Id
@@ -33,4 +40,8 @@ public class Master {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_code", referencedColumnName = "post_code")
     private Post post;
+
+    @OneToMany(mappedBy="master")
+    @ToString.Exclude
+    private List<Order> orders;
 }
