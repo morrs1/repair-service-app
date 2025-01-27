@@ -43,7 +43,7 @@ public class Order {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="order_components_code", referencedColumnName = "co_code")
-    private OrderOfComponents orderOFComponents;
+    private OrderOfComponents orderOfComponents;
 
 
 
