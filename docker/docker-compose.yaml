@@ -54,10 +54,10 @@ services:
   liquibase:
     container_name: liquibase
     image: liquibase/liquibase:4.31-alpine
-    command: liquibase update --url=jdbc:postgresql://postgres:5432/repair_service --username=postgres --password=123 --changelog-file=/changeLog-master.yaml
+    command: liquibase update --url=jdbc:postgresql://postgres:5432/repair_service --username=postgres --password=123 --changelog-file=/migrations/db.changeLog-master.yaml
     volumes:
-      - ./../src/main/resources/db/changelog/db.changelog-master.yaml:/liquibase/changeLog-master.yaml
-      - ./../src/main/resources/db/changelog/v.1.0.0/.:/liquibase/v.1.0.0/
+#      - ./../src/main/resources/db/changelog/db.changelog-master.yaml:/liquibase/changeLog-master.yaml
+      - ./../src/main/resources/db/changelog/:/liquibase/migrations/
     networks:
       - my_network
     depends_on:
