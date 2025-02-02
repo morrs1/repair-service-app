@@ -1,7 +1,11 @@
 databaseChangeLog:
   - include:
-      file: v.1.0.0/create-tables.yaml
+      file: migrations/v.1.0.0/create-tables.yaml
   - include:
-      file: v.1.0.0/init-insert.yaml
+      file: migrations/v.1.0.0/init-insert.yaml
   - include:
-      file: v.1.0.0/fix-constraint-phone-number.sql
+      file: migrations/v.1.0.0/fix-constraint-phone-number.sql
+  - include:
+      file: migrations/v.1.1.0/create-trigger.sql
+  - include:
+      file: migrations/v.1.1.0/init-insert.sql
