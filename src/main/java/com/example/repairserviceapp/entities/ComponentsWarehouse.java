@@ -18,7 +18,7 @@ public class ComponentsWarehouse {
 
     @Id
     @Column(name = "components_code")
-    private UUID componentsCode;
+    private UUID id;
 
     @Column(name = "component_name")
     private String componentName;
