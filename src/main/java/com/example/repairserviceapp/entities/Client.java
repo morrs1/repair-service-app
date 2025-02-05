@@ -28,8 +28,8 @@ public class Client {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
+    @ToString.Exclude
     private List<Order> orders;
 
     @Override
