@@ -24,7 +24,7 @@ public class PostsService {
         return postsRepo.findAll();
     }
 
-    public Post readById(UUID id) {
+    public Post read(UUID id) {
         return postsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no post with this id"));
     }
 
