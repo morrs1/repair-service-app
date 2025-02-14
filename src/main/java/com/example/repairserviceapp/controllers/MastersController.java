@@ -2,7 +2,7 @@ package com.example.repairserviceapp.controllers;
 
 import com.example.repairserviceapp.DTOs.MasterDTO;
 import com.example.repairserviceapp.entities.Master;
-import com.example.repairserviceapp.exceptions.MastersValidationException;
+import com.example.repairserviceapp.exceptions.ValidationException;
 import com.example.repairserviceapp.mappers.MasterMapper;
 import com.example.repairserviceapp.services.MastersService;
 import jakarta.validation.Valid;
@@ -38,12 +38,13 @@ public class MastersController {
 
     @PostMapping("")
     public MasterDTO create(@RequestBody @Valid MasterDTO masterDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new MastersValidationException("Validation Error: " + bindingResult.getAllErrors().stream().map(
-                    DefaultMessageSourceResolvable::getDefaultMessage).toList()
-            );
-
-        }
+        //TODO передалть создание ошибки и переделать хендлер
+//        if (bindingResult.hasErrors()) {
+//            throw new ValidationException("Validation Error: " + bindingResult.getAllErrors().stream().map(
+//                    DefaultMessageSourceResolvable::getDefaultMessage).toList()
+//            );
+//
+//        }
         Master master = masterMapper.toMaster(masterDTO);
         return masterMapper.toMasterDTO(mastersService.create(master));
     }
