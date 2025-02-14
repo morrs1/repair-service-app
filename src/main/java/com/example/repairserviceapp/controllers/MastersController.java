@@ -9,11 +9,12 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -38,24 +39,27 @@ public class MastersController {
 
     @PostMapping("")
     public MasterDTO create(@RequestBody @Valid MasterDTO masterDTO, BindingResult bindingResult) {
-        //TODO передалть создание ошибки и переделать хендлер
-//        if (bindingResult.hasErrors()) {
-//            throw new ValidationException("Validation Error: " + bindingResult.getAllErrors().stream().map(
-//                    DefaultMessageSourceResolvable::getDefaultMessage).toList()
-//            );
-//
-//        }
+        validate(bindingResult);
         Master master = masterMapper.toMaster(masterDTO);
         return masterMapper.toMasterDTO(mastersService.create(master));
     }
 
     @PatchMapping("/{id}")
-    public MasterDTO update(@PathVariable UUID id, @RequestBody MasterDTO masterDTO) {
+    public MasterDTO update(@PathVariable UUID id, @RequestBody @Valid MasterDTO masterDTO, BindingResult bindingResult) {
+        validate(bindingResult);
         return masterMapper.toMasterDTO(mastersService.update(id, masterMapper.toMaster(masterDTO)));
     }
 
     @DeleteMapping("/{id}")
     public MasterDTO delete(@PathVariable UUID id) {
         return masterMapper.toMasterDTO(mastersService.delete(id));
+    }
+
+    private void validate(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            throw new ValidationException("Validation Error", errors);
+        }
     }
 }
