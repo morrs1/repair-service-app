@@ -39,14 +39,14 @@ public class MastersController {
 
     @PostMapping("")
     public MasterDTO create(@RequestBody @Valid MasterDTO masterDTO, BindingResult bindingResult) {
-        validate(bindingResult);
+        validate(bindingResult, "Create master failed");
         Master master = masterMapper.toMaster(masterDTO);
         return masterMapper.toMasterDTO(mastersService.create(master));
     }
 
     @PatchMapping("/{id}")
     public MasterDTO update(@PathVariable UUID id, @RequestBody @Valid MasterDTO masterDTO, BindingResult bindingResult) {
-        validate(bindingResult);
+        validate(bindingResult, "Update master failed");
         return masterMapper.toMasterDTO(mastersService.update(id, masterMapper.toMaster(masterDTO)));
     }
 
@@ -55,11 +55,11 @@ public class MastersController {
         return masterMapper.toMasterDTO(mastersService.delete(id));
     }
 
-    private void validate(BindingResult bindingResult) {
+    private void validate(BindingResult bindingResult, String message) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            throw new ValidationException("Validation Error", errors);
+            throw new ValidationException(String.format("Validation Error: %s", message), errors);
         }
     }
 }
