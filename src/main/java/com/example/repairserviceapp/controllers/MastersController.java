@@ -7,7 +7,6 @@ import com.example.repairserviceapp.mappers.MasterMapper;
 import com.example.repairserviceapp.services.MastersService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Slf4j
+
 @RestController
 @RequestMapping("/api/master")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
