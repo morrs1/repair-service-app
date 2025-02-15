@@ -1,10 +1,12 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.Master;
+import com.example.repairserviceapp.exceptions.EntityAlreadyExistsException;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.MastersRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,9 @@ public class MastersService {
 
     @Transactional
     public Master create(Master master) {
+        if (exists(master.getName(), master.getSurname(), master.getPatronymic())) {
+            throw new EntityAlreadyExistsException("This master already exists");
+        }
         master.setId(UUID.randomUUID());
         return mastersRepo.save(master);
     }
@@ -45,5 +50,11 @@ public class MastersService {
         Master oldMaster = mastersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no master with this id"));
         mastersRepo.deleteById(id);
         return oldMaster;
+    }
+
+    public boolean exists(String name, String surname, String patronymic) {
+        return mastersRepo.exists(Example.of(
+                Master.builder().name(name).surname(surname).patronymic(patronymic).build()
+        ));
     }
 }
