@@ -21,7 +21,7 @@ public class ErrorsHandler {
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ValidationErrorResponse> validationExceptionHandler(ValidationException ex) {
-        log.warn("{} {}", ex.getClass().getSimpleName(), ex.getMessage());
+        log.warn("{} {} {}", ex.getClass().getSimpleName(), ex.getMessage(), ex.getDescriptionOfErrors());
         return ResponseEntity.status(ex.getStatus())
                 .body(
                         new ValidationErrorResponse(ex.getMessage(),
