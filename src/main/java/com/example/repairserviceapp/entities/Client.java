@@ -28,7 +28,7 @@ public class Client {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "client", orphanRemoval = true)
     @ToString.Exclude
     private List<Order> orders;
 
