@@ -3,8 +3,8 @@ package com.example.repairserviceapp.services;
 import com.example.repairserviceapp.entities.Order;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.OrdersRepo;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OrdersService {
 
     private final OrdersRepo ordersRepo;
-    private final EntityManager entityManager;
 
     public List<Order> readAll() {
         return ordersRepo.findAll();
@@ -38,15 +38,13 @@ public class OrdersService {
     public Order update(UUID id, Order order) {
         ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There id no order with this id"));
         order.setId(id);
-        Order updatedOrder = ordersRepo.save(order);
-        entityManager.refresh(updatedOrder);
-        return updatedOrder;
+        return ordersRepo.save(order);
     }
 
     @Transactional
-    public Order delete(UUID id) {
+    public void delete(UUID id) {
         Order oldOrder = ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There id no order with this id"));
-        ordersRepo.deleteById(id);
-        return oldOrder;
+        oldOrder.getOrderOfComponents().setOrder(null);
+        ordersRepo.delete(oldOrder);
     }
 }
