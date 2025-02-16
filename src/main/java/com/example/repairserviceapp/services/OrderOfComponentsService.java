@@ -3,7 +3,6 @@ package com.example.repairserviceapp.services;
 import com.example.repairserviceapp.entities.OrderOfComponents;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.OrderOfComponentsRepo;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class OrderOfComponentsService {
 
     private final OrderOfComponentsRepo orderOfComponentsRepo;
-    private final EntityManager entityManager;
 
     public List<OrderOfComponents> readAll() {
         return orderOfComponentsRepo.findAll();
@@ -38,9 +36,7 @@ public class OrderOfComponentsService {
     public OrderOfComponents update(UUID id, OrderOfComponents orderOfComponents) {
         orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is not order of components with this id"));
         orderOfComponents.setId(id);
-        OrderOfComponents updatedOrderOfComponents = orderOfComponentsRepo.save(orderOfComponents);
-        entityManager.refresh(updatedOrderOfComponents);
-        return updatedOrderOfComponents;
+        return orderOfComponentsRepo.save(orderOfComponents);
     }
 
     @Transactional

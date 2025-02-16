@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/master")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class MastersController {
+public class MastersController extends BaseController {
 
     private final MastersService mastersService;
     private final MasterMapper masterMapper;
@@ -54,11 +54,4 @@ public class MastersController {
         return masterMapper.toMasterDTO(mastersService.delete(id));
     }
 
-    private void validate(BindingResult bindingResult, String message) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            throw new ValidationException(String.format("Validation Error: %s", message), errors);
-        }
-    }
 }

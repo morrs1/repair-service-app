@@ -3,7 +3,6 @@ package com.example.repairserviceapp.services;
 import com.example.repairserviceapp.entities.Status;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.StatusesRepo;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class StatusesService {
 
     private final StatusesRepo statusesRepo;
-    private final EntityManager entityManager;
 
     public List<Status> readAll() {
         return statusesRepo.findAll();
@@ -38,9 +36,7 @@ public class StatusesService {
     public Status update(UUID id, Status status) {
         statusesRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no status with this id"));
         status.setId(id);
-        Status updatedStatus = statusesRepo.save(status);
-        entityManager.refresh(updatedStatus);
-        return updatedStatus;
+        return statusesRepo.save(status);
     }
 
     @Transactional

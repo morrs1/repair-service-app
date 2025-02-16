@@ -3,7 +3,6 @@ package com.example.repairserviceapp.services;
 import com.example.repairserviceapp.entities.ComponentsWarehouse;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.ComponentsWarehouseRepo;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class ComponentsWarehouseService {
 
     private final ComponentsWarehouseRepo componentsWarehouseRepo;
-    private final EntityManager entityManager;
 
     public List<ComponentsWarehouse> readAll() {
         return componentsWarehouseRepo.findAll();
@@ -42,9 +40,7 @@ public class ComponentsWarehouseService {
                 () -> new EntityNotFoundException("There is no components warehouse with this id")
         );
         componentsWarehouse.setId(id);
-        ComponentsWarehouse updatedComponents = componentsWarehouseRepo.save(componentsWarehouse);
-        entityManager.refresh(updatedComponents);
-        return updatedComponents;
+        return componentsWarehouseRepo.save(componentsWarehouse);
     }
 
     @Transactional

@@ -3,7 +3,6 @@ package com.example.repairserviceapp.services;
 import com.example.repairserviceapp.entities.Equipment;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.EquipmentsRepo;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class EquipmentsService {
 
     private final EquipmentsRepo equipmentsRepo;
-    private final EntityManager entityManager;
 
     public List<Equipment> readAll() {
         return equipmentsRepo.findAll();
@@ -40,9 +38,7 @@ public class EquipmentsService {
     public Equipment update(UUID id, Equipment equipment) {
         equipment.setId(id);
         equipmentsRepo.findById(equipment.getId()).orElseThrow(() -> new EntityNotFoundException("There is no equipment with this id"));
-        Equipment updatedEquipment = equipmentsRepo.save(equipment);
-        entityManager.refresh(updatedEquipment);
-        return updatedEquipment;
+        return equipmentsRepo.save(equipment);
     }
 
     @Transactional
