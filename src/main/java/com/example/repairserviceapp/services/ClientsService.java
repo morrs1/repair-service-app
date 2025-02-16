@@ -1,10 +1,12 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.Client;
+import com.example.repairserviceapp.exceptions.EntityAlreadyExistsException;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.ClientsRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,9 @@ public class ClientsService {
 
     @Transactional
     public Client create(Client client) {
+        if (exists(client.getName(), client.getSurname(), client.getPatronymic())) {
+            throw new EntityAlreadyExistsException("This client already exists");
+        }
         client.setId(UUID.randomUUID());
         return clientsRepo.save(client);
     }
@@ -44,5 +49,11 @@ public class ClientsService {
         clientsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no client with this id"));
         client.setId(id);
         return clientsRepo.save(client);
+    }
+
+    private boolean exists(String name, String surname, String patronymic) {
+        return clientsRepo.exists(Example.of(
+                Client.builder().name(name).surname(surname).patronymic(patronymic).build()
+        ));
     }
 }
