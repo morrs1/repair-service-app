@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record MasterDTO(
-        @NotNull(message = "Id must be not empty")
+
         UUID id,
 
         @NotNull(message = "Surname must be not empty")
