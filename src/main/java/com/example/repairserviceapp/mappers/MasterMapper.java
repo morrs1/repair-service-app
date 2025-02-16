@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Mapper(componentModel = "spring")
-
 public abstract class MasterMapper {
 
     @Setter(onMethod = @__(@Autowired))
