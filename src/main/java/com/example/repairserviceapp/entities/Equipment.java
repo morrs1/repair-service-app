@@ -28,6 +28,6 @@ public class Equipment {
     @Column(name = "model")
     private String model;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "equipment")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "equipment", orphanRemoval = true)
     private List<Order> orders;
 }
