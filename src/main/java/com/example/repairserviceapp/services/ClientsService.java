@@ -40,7 +40,7 @@ public class ClientsService {
     @Transactional
     public Client delete(UUID id) {
         Client client = clientsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no client with this id"));
-        clientsRepo.delete(client);
+        clientsRepo.deleteById(id);
         return client;
     }
 
