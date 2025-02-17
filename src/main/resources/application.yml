@@ -1,6 +1,6 @@
 spring:
   config:
-    import: "file:src/main/resources/.env[.properties]"
+    import: "file:.env[.properties]"
   application:
     name: first-rest-app
   datasource:

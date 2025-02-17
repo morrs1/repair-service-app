@@ -17,8 +17,8 @@ services:
       retries: 5
     networks:
       - my_network  # Подключение к сети
-  #    env_file:
-  #      - ../src/main/resources/.env
+    env_file:
+      - ../.env
 
   pgadmin:
     image: dpage/pgadmin4:8.14.0
@@ -47,8 +47,8 @@ services:
     entrypoint: /bin/sh -c "chmod 600 /pgadmin4/pgpass; /entrypoint.sh;"
     networks:
       - my_network  # Подключение к сети
-  #    env_file:
-  #      - ../src/main/resources/.env
+    env_file:
+      - ../.env
 
 
   liquibase:
@@ -69,4 +69,4 @@ volumes:
   pgadmin_data:
 
 networks:
-  my_network:  # Определение пользовательской сети
+  my_network:
