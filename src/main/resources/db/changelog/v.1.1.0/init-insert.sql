@@ -1,5 +1,9 @@
 --liquibase formatted sql
+
+--changeset DDD:249
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+--rollback DROP EXTENSION IF EXISTS "uuid-ossp"
+
 --changeset DDD:250
 INSERT INTO posts (post_code, post_name)
 VALUES (uuid_generate_v4(), 'Менеджер'),
