@@ -42,9 +42,9 @@ public class OrdersService {
     }
 
     @Transactional
-    public void delete(UUID id) {
+    public Order delete(UUID id) {
         Order oldOrder = ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There id no order with this id"));
-        oldOrder.getOrderOfComponents().setOrder(null);
         ordersRepo.delete(oldOrder);
+        return oldOrder;
     }
 }
