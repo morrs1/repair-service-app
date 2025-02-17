@@ -44,8 +44,8 @@ public class OrdersController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
-        ordersService.delete(id);
+    public OrderDTO delete(@PathVariable UUID id) {
+        return orderMapper.toDTO(ordersService.delete(id));
     }
 
 
