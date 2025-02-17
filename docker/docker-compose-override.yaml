@@ -1,7 +1,32 @@
 services:
+  repair-service-app:
+    image: repair-service-app:latest
+    build:
+      context: ..
+      args:
+        DOCKER_BUILDKIT: 1
+    restart: on-failure
+    ports:
+      - "${APP_PORT}:8080"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      liquibase:
+        condition: service_completed_successfully
+    networks:
+      - my_network
+    env_file:
+      - ../.env
+
   postgres:
     image: postgres:16.3-alpine
-    restart: "no"
+    restart: on-failure
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
@@ -11,18 +36,18 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: repair_service
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d repair_service"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d repair_service" ]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - my_network  # Подключение к сети
+      - my_network
     env_file:
       - ../.env
 
   pgadmin:
     image: dpage/pgadmin4:8.14.0
-    restart: "no"
+    restart: on-failure
     ports:
       - "5050:80"
     volumes:
@@ -30,8 +55,8 @@ services:
       - ./pgadmin/servers.json:/pgadmin4/servers.json
       - ./pgadmin/pgpass:/pgadmin4/pgpass
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: 123
+      PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: "False"
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
     healthcheck:
@@ -54,14 +79,16 @@ services:
   liquibase:
     container_name: liquibase
     image: liquibase/liquibase:4.31-alpine
-    command: liquibase update --url=jdbc:postgresql://postgres:5432/repair_service --username=postgres --password=123 --changelog-file=/migrations/db.changeLog-master.yaml
+    command: liquibase update --url=jdbc:postgresql://postgres:5432/${POSTGRES_DB} --username=${POSTGRES_USER} --password=${POSTGRES_PASSWORD} --changelog-file=/migrations/db.changeLog-master.yaml
     volumes:
-#      - ./../src/main/resources/db/changelog/db.changelog-master.yaml:/liquibase/changeLog-master.yaml
       - ./../src/main/resources/db/changelog/:/liquibase/migrations/
     networks:
       - my_network
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ../.env
 
 
 volumes:
