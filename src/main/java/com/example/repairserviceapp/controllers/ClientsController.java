@@ -71,8 +71,8 @@ public class ClientsController extends BaseController {
             description = "Позволяет удалять данные об отдельном пользователе, зная его id"
     )
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") UUID id) {
-        clientsService.delete(id);
+    public ClientDTO delete(@PathVariable("id") UUID id) {
+      return clientsMapper.toDTO(clientsService.delete(id));
     }
 
 
