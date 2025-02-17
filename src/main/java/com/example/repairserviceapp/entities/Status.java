@@ -22,7 +22,7 @@ public class Status {
     @Column(name = "status_name")
     private String name;
 
-    @OneToMany(mappedBy = "status", orphanRemoval = true)
+    @OneToMany(mappedBy = "status")
     @ToString.Exclude
     private List<Order> orders;
 }

@@ -43,7 +43,7 @@ public class Master {
     @JoinColumn(name = "post_code", referencedColumnName = "post_code")
     private Post post;
 
-    @OneToMany(mappedBy = "master", orphanRemoval = true)
+    @OneToMany(mappedBy = "master")
     @ToString.Exclude
     private List<Order> orders;
 }
