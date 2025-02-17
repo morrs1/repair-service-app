@@ -19,3 +19,5 @@ databaseChangeLog:
             encoding: utf8
             endDelimiter: \n$$
             path: migrations/v.1.2.0/create-function-versioning.sql
+            splitStatements: true
+            stripComments: false
