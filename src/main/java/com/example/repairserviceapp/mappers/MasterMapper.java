@@ -1,6 +1,7 @@
 package com.example.repairserviceapp.mappers;
 
-import com.example.repairserviceapp.DTOs.MasterDTO;
+import com.example.repairserviceapp.DTOs.master.MasterDTORequest;
+import com.example.repairserviceapp.DTOs.master.MasterDTOResponse;
 import com.example.repairserviceapp.entities.Master;
 import com.example.repairserviceapp.services.PostsService;
 import lombok.Setter;
@@ -15,10 +16,10 @@ public abstract class MasterMapper {
     @Setter(onMethod = @__(@Autowired))
     protected PostsService postsService;
 
-    @Mapping(target = "post", expression = "java(postsService.read(masterDTO.postId()))")
-    public abstract Master toMaster(MasterDTO masterDTO);
+    @Mapping(target = "post", expression = "java(postsService.read(masterDTORequest.postId()))")
+    public abstract Master toMaster(MasterDTORequest masterDTORequest);
 
     @Mapping(target = "postId", expression = "java(master.getPost().getId())")
-    public abstract MasterDTO toMasterDTO(Master master);
+    public abstract MasterDTOResponse toMasterDTO(Master master);
 }
 
