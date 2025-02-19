@@ -25,7 +25,7 @@ public class OrdersService {
     }
 
     public Order read(UUID id) {
-        return ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There id no order with this id"));
+        return ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no order with this id"));
     }
 
     @Transactional
@@ -36,15 +36,15 @@ public class OrdersService {
 
     @Transactional
     public Order update(UUID id, Order order) {
-        ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There id no order with this id"));
+        ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no order with this id"));
         order.setId(id);
         return ordersRepo.save(order);
     }
 
     @Transactional
     public Order delete(UUID id) {
-        Order oldOrder = ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There id no order with this id"));
-        ordersRepo.delete(oldOrder);
+        Order oldOrder = ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no order with this id"));
+        ordersRepo.deleteById(id);
         return oldOrder;
     }
 }
