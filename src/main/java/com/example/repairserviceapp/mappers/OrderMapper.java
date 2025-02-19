@@ -26,7 +26,7 @@ public abstract class OrderMapper {
     @Mapping(target = "equipmentId", expression = "java(order.getEquipment().getId())")
     @Mapping(target = "masterId", expression = "java(order.getMaster().getId())")
     @Mapping(target = "statusId", expression = "java(order.getStatus().getId())")
-    @Mapping(target = "orderOfComponentsId", expression = "java(order.getOrderOfComponents().getId())")
+    @Mapping(target = "orderOfComponentsId", expression = "java(order.getOrderOfComponents()==null ? null  : order.getOrderOfComponents().getId())")
     public abstract OrderDTO toDTO(Order order);
 
     @Mapping(target = "client", expression = "java(clientsService.read(orderDTO.clientId()))")
