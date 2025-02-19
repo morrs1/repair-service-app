@@ -1,4 +1,4 @@
-package com.example.repairserviceapp.DTOs;
+package com.example.repairserviceapp.DTOs.order;
 
 import com.example.repairserviceapp.annotations.MinDate;
 import jakarta.validation.constraints.NotNull;
@@ -6,8 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record OrderDTO(
-        UUID id,
+public record OrderDTORequest(
         @NotNull(message = "Date must be not empty")
         @MinDate(value = "2000-01-01")
         LocalDate date,
