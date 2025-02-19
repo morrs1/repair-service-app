@@ -1,20 +1,57 @@
 package com.example.repairserviceapp.controllers;
 
+import com.example.repairserviceapp.DTOs.componentsWarehouse.ComponentsWarehouseDTORequest;
+import com.example.repairserviceapp.DTOs.componentsWarehouse.ComponentsWarehouseDTOResponse;
+import com.example.repairserviceapp.mappers.ComponentsWarehouseMapper;
 import com.example.repairserviceapp.services.ComponentsWarehouseService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/components-warehouse")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ComponentsWarehouseController {
+public class ComponentsWarehouseController extends BaseController {
 
     private ComponentsWarehouseService componentsWarehouseService;
+    private ComponentsWarehouseMapper componentsWarehouseMapper;
 
-//    @GetMapping("")
-//    public List<ComponentsWarehouse> readAll() {
-//
-//    }
+    @GetMapping("")
+    public List<ComponentsWarehouseDTOResponse> readAll() {
+        return componentsWarehouseService.readAll()
+                .stream()
+                .map(elem -> componentsWarehouseMapper.toDTO(elem))
+                .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ComponentsWarehouseDTOResponse read(@PathVariable("id") UUID id) {
+        return componentsWarehouseMapper.toDTO(componentsWarehouseService.read(id));
+    }
+
+    @PostMapping("")
+    public ComponentsWarehouseDTOResponse create(@RequestBody @Valid ComponentsWarehouseDTORequest componentsWarehouse, BindingResult bindingResult) {
+        validate(bindingResult, "Create components warehouse failed");
+        return componentsWarehouseMapper.toDTO(
+                componentsWarehouseService.create(
+                        componentsWarehouseMapper.toEntity(componentsWarehouse)
+                )
+        );
+    }
+
+    @PatchMapping("/{id}")
+    public ComponentsWarehouseDTOResponse update(@PathVariable("id") UUID id, @RequestBody @Valid ComponentsWarehouseDTORequest componentsWarehouse, BindingResult bindingResult) {
+        validate(bindingResult, "Update components warehouse failed");
+        return componentsWarehouseMapper.toDTO(componentsWarehouseService.update(id, componentsWarehouseMapper.toEntity(componentsWarehouse)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ComponentsWarehouseDTOResponse delete(@PathVariable("id") UUID id) {
+        return componentsWarehouseMapper.toDTO(componentsWarehouseService.delete(id));
+    }
 }
