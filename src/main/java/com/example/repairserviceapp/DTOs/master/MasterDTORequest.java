@@ -1,4 +1,4 @@
-package com.example.repairserviceapp.DTOs;
+package com.example.repairserviceapp.DTOs.master;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -7,9 +7,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record MasterDTO(
-
-        UUID id,
+public record MasterDTORequest(
 
         @NotNull(message = "Surname must be not empty")
         @Size(min = 2, max = 30, message = "Size must be between 2 and 30")
