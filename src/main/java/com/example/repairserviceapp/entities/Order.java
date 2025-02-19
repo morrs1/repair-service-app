@@ -38,7 +38,7 @@ public class Order {
     @JoinColumn(name="order_status", referencedColumnName="status_code")
     private Status status;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval=true)
     @JoinColumn(name="order_components_code", referencedColumnName = "co_code")
     private OrderOfComponents orderOfComponents;
 
