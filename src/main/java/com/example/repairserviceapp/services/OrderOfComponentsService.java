@@ -23,7 +23,10 @@ public class OrderOfComponentsService {
     }
 
     public OrderOfComponents read(UUID id) {
-        return orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
+        if (id == null) {
+            return null;
+        }
+        return orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no OrderOfComponents with this id"));
     }
 
     @Transactional
@@ -34,14 +37,14 @@ public class OrderOfComponentsService {
 
     @Transactional
     public OrderOfComponents update(UUID id, OrderOfComponents orderOfComponents) {
-        orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is not order of components with this id"));
+        orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no order of components with this id"));
         orderOfComponents.setId(id);
         return orderOfComponentsRepo.save(orderOfComponents);
     }
 
     @Transactional
     public OrderOfComponents delete(UUID id) {
-        OrderOfComponents oldOrderOfComponents = orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is not order of components with this id"));
+        OrderOfComponents oldOrderOfComponents = orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no order of components with this id"));
         orderOfComponentsRepo.deleteById(id);
         return oldOrderOfComponents;
     }
