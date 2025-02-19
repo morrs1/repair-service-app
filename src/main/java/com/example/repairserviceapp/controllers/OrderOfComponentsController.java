@@ -1,6 +1,7 @@
 package com.example.repairserviceapp.controllers;
 
-import com.example.repairserviceapp.DTOs.OrderOfComponentsDTO;
+import com.example.repairserviceapp.DTOs.orderOfComponents.OrderOfComponentsDTORequest;
+import com.example.repairserviceapp.DTOs.orderOfComponents.OrderOfComponentsDTOResponse;
 import com.example.repairserviceapp.mappers.OrderOfComponentsMapper;
 import com.example.repairserviceapp.services.OrderOfComponentsService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class OrderOfComponentsController extends BaseController {
     private OrderOfComponentsMapper orderOfComponentsMapper;
 
     @GetMapping("")
-    public List<OrderOfComponentsDTO> readAll() {
+    public List<OrderOfComponentsDTOResponse> readAll() {
         return orderOfComponentsService
                 .readAll()
                 .stream()
@@ -30,24 +31,24 @@ public class OrderOfComponentsController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public OrderOfComponentsDTO read(@PathVariable UUID id) {
+    public OrderOfComponentsDTOResponse read(@PathVariable UUID id) {
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.read(id));
     }
 
     @PostMapping("")
-    public OrderOfComponentsDTO create(@RequestBody @Valid OrderOfComponentsDTO dto, BindingResult bindingResult) {
+    public OrderOfComponentsDTOResponse create(@RequestBody @Valid OrderOfComponentsDTORequest dto, BindingResult bindingResult) {
         validate(bindingResult, "Create OrderOfComponents failed");
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.create(orderOfComponentsMapper.toOrderOfComponents(dto)));
     }
 
     @PatchMapping("/{id}")
-    public OrderOfComponentsDTO update(@PathVariable UUID id, @RequestBody @Valid OrderOfComponentsDTO dto, BindingResult bindingResult) {
+    public OrderOfComponentsDTOResponse update(@PathVariable UUID id, @RequestBody @Valid OrderOfComponentsDTORequest dto, BindingResult bindingResult) {
         validate(bindingResult, "Update OrderOfComponents failed");
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.update(id, orderOfComponentsMapper.toOrderOfComponents(dto)));
     }
 
     @DeleteMapping("/{id}")
-    public OrderOfComponentsDTO delete(@PathVariable UUID id) {
+    public OrderOfComponentsDTOResponse delete(@PathVariable UUID id) {
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.delete(id));
     }
 
