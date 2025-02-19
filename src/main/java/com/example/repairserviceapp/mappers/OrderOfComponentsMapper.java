@@ -1,6 +1,7 @@
 package com.example.repairserviceapp.mappers;
 
-import com.example.repairserviceapp.DTOs.OrderOfComponentsDTO;
+import com.example.repairserviceapp.DTOs.orderOfComponents.OrderOfComponentsDTORequest;
+import com.example.repairserviceapp.DTOs.orderOfComponents.OrderOfComponentsDTOResponse;
 import com.example.repairserviceapp.entities.OrderOfComponents;
 import com.example.repairserviceapp.services.ComponentsWarehouseService;
 import com.example.repairserviceapp.services.ExecutionOfOrderService;
@@ -19,11 +20,11 @@ public abstract class OrderOfComponentsMapper {
     protected ExecutionOfOrderService executionOfOrderService;
 
 
-    @Mapping(target = "componentsWarehouse", expression = "java(componentsWarehouseService.read(orderOfComponentsDTO.componentsWarehouseId()))")
-    @Mapping(target = "executionOfOrder", expression = "java(executionOfOrderService.read(orderOfComponentsDTO.executionOfOrderId()))")
-    public abstract OrderOfComponents toOrderOfComponents(OrderOfComponentsDTO orderOfComponentsDTO);
+    @Mapping(target = "componentsWarehouse", expression = "java(componentsWarehouseService.read(orderOfComponentsDTORequest.componentsWarehouseId()))")
+    @Mapping(target = "executionOfOrder", expression = "java(executionOfOrderService.read(orderOfComponentsDTORequest.executionOfOrderId()))")
+    public abstract OrderOfComponents toOrderOfComponents(OrderOfComponentsDTORequest orderOfComponentsDTORequest);
 
     @Mapping(target = "componentsWarehouseId", expression = "java(orderOfComponents.getComponentsWarehouse().getId())")
     @Mapping(target = "executionOfOrderId", expression = "java(orderOfComponents.getExecutionOfOrder().getId())")
-    public abstract OrderOfComponentsDTO toDTO(OrderOfComponents orderOfComponents);
+    public abstract OrderOfComponentsDTOResponse toDTO(OrderOfComponents orderOfComponents);
 }
