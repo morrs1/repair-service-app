@@ -1,13 +1,18 @@
 package com.example.repairserviceapp.entities;
 
+import io.hypersistence.utils.hibernate.type.range.PostgreSQLRangeType;
+import io.hypersistence.utils.hibernate.type.range.Range;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "clients")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
 @ToString
@@ -33,4 +38,10 @@ public class Client {
     @ToString.Exclude
     private List<Order> orders;
 
+    @Type(PostgreSQLRangeType.class)
+    @Column(
+            name="sys_period",
+            columnDefinition = "tstzrange"
+    )
+    private Range<ZonedDateTime> localDateRange;
 }

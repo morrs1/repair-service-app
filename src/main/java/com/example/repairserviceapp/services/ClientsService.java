@@ -1,24 +1,32 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.Client;
+import com.example.repairserviceapp.entities.ClientHistory;
 import com.example.repairserviceapp.exceptions.EntityAlreadyExistsException;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
+import com.example.repairserviceapp.repos.ClientsHistoryRepo;
 import com.example.repairserviceapp.repos.ClientsRepo;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Transactional(readOnly = true)
+@Slf4j
 public class ClientsService {
 
     private final ClientsRepo clientsRepo;
+    private final ClientsHistoryRepo clientsHistoryRepo;
+    private final EntityManager entityManager;
 
     public List<Client> readAll() {
         return clientsRepo.findAll();
@@ -55,5 +63,29 @@ public class ClientsService {
         return clientsRepo.exists(Example.of(
                 Client.builder().name(name).surname(surname).patronymic(patronymic).build()
         ));
+    }
+
+    public List<ClientHistory> readAllHistory() {
+        return clientsHistoryRepo.findAll();
+    }
+
+    @Transactional
+    public ClientHistory restore(UUID personId, OffsetDateTime timestamp) {
+
+        ClientHistory historyClient = clientsHistoryRepo
+                .findByClientIdAndTimestamp(personId, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException("There is no client with this id"));
+
+        historyClient = entityManager.merge(historyClient);
+
+        // Сохраняем в новый репозиторий
+        ClientHistory savedClient = clientsRepo.save(historyClient);
+
+        // TODO: понять как исправить особенность Hibernate при одновременном удалении и добавлении
+        // Не пробовал ещё пока только сохранять элемент, удаление работает отлично
+//        // Удаляем из старого репозитория
+//        clientsHistoryRepo.delete(historyClient);
+
+        return savedClient;
     }
 }
