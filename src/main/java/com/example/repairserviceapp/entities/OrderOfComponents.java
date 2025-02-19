@@ -26,6 +26,4 @@ public class OrderOfComponents {
     @JoinColumn(name = "execution_code", referencedColumnName = "ex_code")
     private ExecutionOfOrder executionOfOrder;
 
-    @OneToOne(mappedBy = "orderOfComponents")
-    private Order order;
 }
