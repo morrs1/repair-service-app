@@ -1,6 +1,7 @@
 package com.example.repairserviceapp.mappers;
 
-import com.example.repairserviceapp.DTOs.OrderDTO;
+import com.example.repairserviceapp.DTOs.order.OrderDTORequest;
+import com.example.repairserviceapp.DTOs.order.OrderDTOResponse;
 import com.example.repairserviceapp.entities.Order;
 import com.example.repairserviceapp.services.*;
 import lombok.Setter;
@@ -27,14 +28,14 @@ public abstract class OrderMapper {
     @Mapping(target = "masterId", expression = "java(order.getMaster().getId())")
     @Mapping(target = "statusId", expression = "java(order.getStatus().getId())")
     @Mapping(target = "orderOfComponentsId", expression = "java(order.getOrderOfComponents()==null ? null  : order.getOrderOfComponents().getId())")
-    public abstract OrderDTO toDTO(Order order);
+    public abstract OrderDTOResponse toDTO(Order order);
 
-    @Mapping(target = "client", expression = "java(clientsService.read(orderDTO.clientId()))")
-    @Mapping(target = "equipment", expression = "java(equipmentsService.read(orderDTO.equipmentId()))")
-    @Mapping(target = "master", expression = "java(mastersService.read(orderDTO.masterId()))")
-    @Mapping(target = "status", expression = "java(statusesService.read(orderDTO.statusId()))")
-    @Mapping(target = "orderOfComponents", expression = "java(orderOfComponentsService.read(orderDTO.orderOfComponentsId()))")
-    public abstract Order toOrder(OrderDTO orderDTO);
+    @Mapping(target = "client", expression = "java(clientsService.read(orderDTORequest.clientId()))")
+    @Mapping(target = "equipment", expression = "java(equipmentsService.read(orderDTORequest.equipmentId()))")
+    @Mapping(target = "master", expression = "java(mastersService.read(orderDTORequest.masterId()))")
+    @Mapping(target = "status", expression = "java(statusesService.read(orderDTORequest.statusId()))")
+    @Mapping(target = "orderOfComponents", expression = "java(orderOfComponentsService.read(orderDTORequest.orderOfComponentsId()))")
+    public abstract Order toOrder(OrderDTORequest orderDTORequest);
 
 
 }
