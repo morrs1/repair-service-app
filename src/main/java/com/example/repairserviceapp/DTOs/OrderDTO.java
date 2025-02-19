@@ -19,7 +19,6 @@ public record OrderDTO(
         UUID masterId,
         @NotNull(message = "Status id must be not empty")
         UUID statusId,
-        @NotNull(message = "Order of components id must be not empty")
         UUID orderOfComponentsId
 ) {
 }
