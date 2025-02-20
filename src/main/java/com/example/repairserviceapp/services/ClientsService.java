@@ -76,16 +76,6 @@ public class ClientsService {
                 .findByClientIdAndTimestamp(personId, timestamp)
                 .orElseThrow(() -> new EntityNotFoundException("There is no client with this id"));
 
-        historyClient = entityManager.merge(historyClient);
-
-        // Сохраняем в новый репозиторий
-        ClientHistory savedClient = clientsRepo.save(historyClient);
-
-        // TODO: понять как исправить особенность Hibernate при одновременном удалении и добавлении
-        // Не пробовал ещё пока только сохранять элемент, удаление работает отлично
-//        // Удаляем из старого репозитория
-//        clientsHistoryRepo.delete(historyClient);
-
-        return savedClient;
+        return clientsRepo.save(historyClient);
     }
 }
