@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Tag(name = "Контроллер для управления историей мастеров", description = "Здесь реализуется свойство темпоральности")
 @RestController
-@RequestMapping("/api/master/history")
+@RequestMapping("/api/history/master")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class MastersHistoryController extends BaseController {
     private MastersService masterService;
