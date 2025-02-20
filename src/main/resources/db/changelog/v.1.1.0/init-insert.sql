@@ -33,9 +33,9 @@ VALUES (uuid_generate_v4(), 'Станок', 'SN123456', 'Model A'),
 --rollback DELETE FROM components_equipments;
 
 --changeset DDD:254
-INSERT INTO clients (client_code, surname, name, patronymic, phone_number)
-VALUES (uuid_generate_v4(), 'Сидоров', 'Сидор', 'Сидорович', '+71112223333'),
-       (uuid_generate_v4(), 'Кузнецов', 'Алексей', 'Алексеевич', '+78444555666');
+INSERT INTO clients (client_code, surname, name, patronymic, phone_number, email, password)
+VALUES (uuid_generate_v4(), 'Сидоров', 'Сидор', 'Сидорович', '+71112223333', 'ggg@gmail.ru', '{noop}123'),
+       (uuid_generate_v4(), 'Кузнецов', 'Алексей', 'Алексеевич', '+78444555666', 'gggf@gmail.ru', '{noop}123');
 --rollback DELETE FROM clients;
 
 --changeset DDD:255
