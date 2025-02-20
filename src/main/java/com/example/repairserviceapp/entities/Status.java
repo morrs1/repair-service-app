@@ -10,10 +10,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders_statuses")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Setter
 @Getter
 @ToString
-public class Status {
+public class Status extends BaseEntity {
 
     @Id
     @Column(name = "status_code")
