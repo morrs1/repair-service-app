@@ -16,6 +16,8 @@ public interface EquipmentsHistoryRepo extends JpaRepository<EquipmentHistory, U
             value = "SELECT * FROM equipments_history WHERE eq_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<EquipmentHistory> findByEquipmentIdAndTimestamp(@Param("id") UUID id,
-                                                             @Param("timestamp") OffsetDateTime timestamp);
+    Optional<EquipmentHistory> findByEquipmentIdAndTimestamp(
+            @Param("id") UUID id,
+            @Param("timestamp") OffsetDateTime timestamp
+    );
 }

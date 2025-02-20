@@ -14,7 +14,8 @@ public interface PostsHistoryRepo extends JpaRepository<PostHistory, UUID> {
             value = "SELECT * FROM posts_history WHERE post_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<PostHistory> findByPostIdAndTimestamp(@Param("id") UUID id,
-                                                   @Param("timestamp") OffsetDateTime timestamp
+    Optional<PostHistory> findByPostIdAndTimestamp(
+            @Param("id") UUID id,
+            @Param("timestamp") OffsetDateTime timestamp
     );
 }

@@ -16,6 +16,8 @@ public interface OrdersHistoryRepo extends JpaRepository<OrderHistory, UUID> {
             value = "SELECT * FROM orders_history WHERE order_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<OrderHistory> findByOrderIdAndTimestamp(@Param("id") UUID id,
-                                                     @Param("timestamp") OffsetDateTime timestamp);
+    Optional<OrderHistory> findByOrderIdAndTimestamp(
+            @Param("id") UUID id,
+            @Param("timestamp") OffsetDateTime timestamp
+    );
 }

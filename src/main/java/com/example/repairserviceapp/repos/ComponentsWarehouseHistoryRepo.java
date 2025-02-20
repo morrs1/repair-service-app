@@ -16,6 +16,8 @@ public interface ComponentsWarehouseHistoryRepo extends JpaRepository<Components
             value = "SELECT * FROM components_warehouse_history WHERE components_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<ComponentsWarehouseHistory> findByComponentsWarehouseIdAndTimestamp(@Param("id") UUID id,
-                                                       @Param("timestamp") OffsetDateTime timestamp);
+    Optional<ComponentsWarehouseHistory> findByComponentsWarehouseIdAndTimestamp(
+            @Param("id") UUID id,
+            @Param("timestamp") OffsetDateTime timestamp
+    );
 }
