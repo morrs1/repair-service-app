@@ -9,10 +9,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "components_order")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Setter
 @Getter
 @ToString
-public class OrderOfComponents {
+public class OrderOfComponents extends BaseEntity {
 
     @Id
     @Column(name = "co_code")
