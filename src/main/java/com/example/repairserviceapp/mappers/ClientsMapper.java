@@ -6,7 +6,8 @@ import com.example.repairserviceapp.entities.Client;
 import com.example.repairserviceapp.entities.ClientHistory;
 import org.mapstruct.Mapper;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
@@ -26,14 +27,14 @@ public abstract class ClientsMapper {
         String name;
         String patronymic;
         String phoneNumber;
-        LocalDateTime localDateRange;
+        OffsetDateTime localDateRange;
 
         id = clientDTO.getId();
         surname = clientDTO.getSurname();
         name = clientDTO.getName();
         patronymic = clientDTO.getPatronymic();
         phoneNumber = clientDTO.getPhoneNumber();
-        localDateRange = LocalDateTime.now(); // clientDTO.getLocalDateRange().lower().toLocalDateTime();
+        localDateRange = clientDTO.getLocalDateRange().lower().toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
 
         return new HistoryClientDTOResponse(id, surname, name, patronymic, phoneNumber, localDateRange);
     }
