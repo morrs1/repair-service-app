@@ -13,6 +13,14 @@ spring:
       ddl-auto: validate
     show-sql: true
     open-in-view: false
+  my-admin:
+    name: ${ADMIN_NAME}
+    surname: ${ADMIN_SURNAME}
+    patronymic: ${ADMIN_PATRONYMIC}
+    phone_number: ${ADMIN_PHONE_NUMBER}
+    email: ${ADMIN_EMAIL}
+    password: ${ADMIN_PASSWORD}
 logging:
   file:
     path: ./../../../logs/
+
