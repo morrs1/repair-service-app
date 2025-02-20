@@ -1,7 +1,7 @@
 package com.example.repairserviceapp.mappers;
 
-import com.example.repairserviceapp.DTOs.OrderDTO;
 import com.example.repairserviceapp.DTOs.equipment.HistoryEquipmentDTOResponse;
+import com.example.repairserviceapp.DTOs.order.OrderDTOResponse;
 import com.example.repairserviceapp.entities.EquipmentHistory;
 import lombok.Setter;
 import org.mapstruct.Mapper;
@@ -27,7 +27,7 @@ public abstract class EquipmentsMapper {
         String name;
         String serialNumber;
         String model;
-        List<OrderDTO> orders;
+        List<OrderDTOResponse> orders;
         OffsetDateTime localDateRange;
 
         id = equipmentHistory.getId();

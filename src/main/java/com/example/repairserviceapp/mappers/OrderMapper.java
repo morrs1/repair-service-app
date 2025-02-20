@@ -23,6 +23,8 @@ public abstract class OrderMapper {
     @Setter(onMethod = @__(@Autowired))
     protected OrderOfComponentsService orderOfComponentsService;
 
+    // protected final ZoneOffset offset = ZoneOffset.UTC;
+
     @Mapping(target = "clientId", expression = "java(order.getClient().getId())")
     @Mapping(target = "equipmentId", expression = "java(order.getEquipment().getId())")
     @Mapping(target = "masterId", expression = "java(order.getMaster().getId())")
@@ -37,5 +39,11 @@ public abstract class OrderMapper {
     @Mapping(target = "orderOfComponents", expression = "java(orderOfComponentsService.read(orderDTORequest.orderOfComponentsId()))")
     public abstract Order toOrder(OrderDTORequest orderDTORequest);
 
-
+//    @Mapping(target = "clientId", expression = "java(orderHistory.getClient().getId())")
+//    @Mapping(target = "equipmentId", expression = "java(orderHistory.getEquipment().getId())")
+//    @Mapping(target = "masterId", expression = "java(orderHistory.getMaster().getId())")
+//    @Mapping(target = "statusId", expression = "java(orderHistory.getStatus().getId())")
+//    @Mapping(target = "orderOfComponentsId", expression = "java(orderHistory.getOrderOfComponents()==null ? null  : order.getOrderOfComponents().getId())")
+//    @Mapping(target = "offsetDateTime", expression = "java(orderHistory.getLocalDateRange().lower().toOffsetDateTime().withOffsetSameInstant(offset))")
+//    public abstract OrderHistoryDTOResponse toDTO(OrderHistory orderHistory);
 }

@@ -27,15 +27,15 @@ public abstract class ClientsMapper {
         String name;
         String patronymic;
         String phoneNumber;
-        OffsetDateTime localDateRange;
+        OffsetDateTime offsetDateTime;
 
         id = clientDTO.getId();
         surname = clientDTO.getSurname();
         name = clientDTO.getName();
         patronymic = clientDTO.getPatronymic();
         phoneNumber = clientDTO.getPhoneNumber();
-        localDateRange = clientDTO.getLocalDateRange().lower().toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+        offsetDateTime = clientDTO.getLocalDateRange().lower().toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
 
-        return new HistoryClientDTOResponse(id, surname, name, patronymic, phoneNumber, localDateRange);
+        return new HistoryClientDTOResponse(id, surname, name, patronymic, phoneNumber, offsetDateTime);
     }
 }

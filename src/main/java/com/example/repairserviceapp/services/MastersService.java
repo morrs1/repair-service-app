@@ -1,8 +1,10 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.Master;
+import com.example.repairserviceapp.entities.MasterHistory;
 import com.example.repairserviceapp.exceptions.EntityAlreadyExistsException;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
+import com.example.repairserviceapp.repos.MastersHistoryRepo;
 import com.example.repairserviceapp.repos.MastersRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +23,7 @@ import java.util.UUID;
 public class MastersService {
 
     private final MastersRepo mastersRepo;
+    private final MastersHistoryRepo mastersHistoryRepo;
 
     public List<Master> readAll() {
         return mastersRepo.findAll();
@@ -56,5 +60,21 @@ public class MastersService {
         return mastersRepo.exists(Example.of(
                 Master.builder().name(name).surname(surname).patronymic(patronymic).build()
         ));
+    }
+
+    public List<MasterHistory> readAllHistory() {
+        return mastersHistoryRepo.findAll();
+    }
+
+    @Transactional
+    public Master restore(UUID masterId, OffsetDateTime timestamp) {
+
+        MasterHistory historyMaster = mastersHistoryRepo
+                .findByMasterIdAndTimestamp(masterId, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "There is no master with this id " + masterId + " and this timestamp " + timestamp
+                ));
+
+        return mastersRepo.save(historyMaster);
     }
 }
