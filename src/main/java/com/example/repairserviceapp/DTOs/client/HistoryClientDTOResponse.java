@@ -27,6 +27,6 @@ public record HistoryClientDTOResponse(
         String phoneNumber,
 
         @NotNull(message = "Zoned date time must be not empty")
-        OffsetDateTime localDateRange
+        OffsetDateTime offsetDateTime
 ) {
 }

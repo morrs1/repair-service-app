@@ -1,13 +1,16 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.Equipment;
+import com.example.repairserviceapp.entities.EquipmentHistory;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
+import com.example.repairserviceapp.repos.EquipmentsHistoryRepo;
 import com.example.repairserviceapp.repos.EquipmentsRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class EquipmentsService {
 
     private final EquipmentsRepo equipmentsRepo;
+    private final EquipmentsHistoryRepo equipmentsHistoryRepo;
 
     public List<Equipment> readAll() {
         return equipmentsRepo.findAll();
@@ -46,5 +50,20 @@ public class EquipmentsService {
         Equipment equipment = equipmentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no equipment with this id"));
         equipmentsRepo.deleteById(id);
         return equipment;
+    }
+
+    public List<EquipmentHistory> readAllHistory() {
+        return equipmentsHistoryRepo.findAll();
+    }
+
+
+    @Transactional
+    public EquipmentHistory restore(UUID personId, OffsetDateTime timestamp) {
+
+        EquipmentHistory equipmentHistory = equipmentsHistoryRepo
+                .findByClientIdAndTimestamp(personId, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException("There is no client with this id " + personId + " or timestamp " + timestamp));
+
+        return equipmentsHistoryRepo.save(equipmentHistory);
     }
 }
