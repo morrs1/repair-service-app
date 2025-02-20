@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Master {
+public class Master extends BaseEntity {
 
     @Id
     @Column(name = "master_code")
