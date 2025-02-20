@@ -58,12 +58,12 @@ public class OrdersService {
 
     @Transactional
     public OrderHistory restore(UUID orderId, OffsetDateTime timestamp) {
-        OrderHistory historyClient = ordersHistoryRepo
+        OrderHistory orderHistory = ordersHistoryRepo
                 .findByOrderIdAndTimestamp(orderId, timestamp)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "There is no order with this id " + orderId + " and timestamp " + timestamp
                 ));
 
-        return ordersHistoryRepo.save(historyClient);
+        return ordersHistoryRepo.save(orderHistory);
     }
 }

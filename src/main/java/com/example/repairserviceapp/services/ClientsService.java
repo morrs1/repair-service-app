@@ -68,11 +68,13 @@ public class ClientsService {
     }
 
     @Transactional
-    public ClientHistory restore(UUID personId, OffsetDateTime timestamp) {
+    public ClientHistory restore(UUID clientId, OffsetDateTime timestamp) {
 
         ClientHistory historyClient = clientsHistoryRepo
-                .findByClientIdAndTimestamp(personId, timestamp)
-                .orElseThrow(() -> new EntityNotFoundException("There is no client with this id"));
+                .findByClientIdAndTimestamp(clientId, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "There is no client with this id " + clientId + " and this timestamp " + timestamp
+                ));
 
         return clientsRepo.save(historyClient);
     }

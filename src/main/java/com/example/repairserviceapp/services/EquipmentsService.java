@@ -58,11 +58,13 @@ public class EquipmentsService {
 
 
     @Transactional
-    public EquipmentHistory restore(UUID personId, OffsetDateTime timestamp) {
+    public EquipmentHistory restore(UUID equipment, OffsetDateTime timestamp) {
 
         EquipmentHistory equipmentHistory = equipmentsHistoryRepo
-                .findByEquipmentIdAndTimestamp(personId, timestamp)
-                .orElseThrow(() -> new EntityNotFoundException("There is no client with this id " + personId + " or timestamp " + timestamp));
+                .findByEquipmentIdAndTimestamp(equipment, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "There is no client with this id " + equipment + " or timestamp " + timestamp
+                ));
 
         return equipmentsHistoryRepo.save(equipmentHistory);
     }
