@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Tag(name = "Контроллер для управления заказов компонентов", description = "Здесь реализуется свойство темпоральности")
 @RestController
-@RequestMapping("/api/order-of-components/history")
+@RequestMapping("/api/history/order-of-components")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderOfComponentsHistoryController extends BaseController {
     private OrderOfComponentsService orderOfComponentsService;
