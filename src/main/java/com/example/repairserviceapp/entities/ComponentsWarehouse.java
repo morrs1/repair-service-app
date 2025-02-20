@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "components_warehouse")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
 @ToString

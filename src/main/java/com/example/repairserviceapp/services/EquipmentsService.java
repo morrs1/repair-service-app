@@ -61,7 +61,7 @@ public class EquipmentsService {
     public EquipmentHistory restore(UUID personId, OffsetDateTime timestamp) {
 
         EquipmentHistory equipmentHistory = equipmentsHistoryRepo
-                .findByClientIdAndTimestamp(personId, timestamp)
+                .findByEquipmentIdAndTimestamp(personId, timestamp)
                 .orElseThrow(() -> new EntityNotFoundException("There is no client with this id " + personId + " or timestamp " + timestamp));
 
         return equipmentsHistoryRepo.save(equipmentHistory);

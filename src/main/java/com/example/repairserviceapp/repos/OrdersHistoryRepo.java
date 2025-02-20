@@ -1,6 +1,7 @@
 package com.example.repairserviceapp.repos;
 
 import com.example.repairserviceapp.entities.EquipmentHistory;
+import com.example.repairserviceapp.entities.OrderHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,9 +12,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface EquipmentsHistoryRepo extends JpaRepository<EquipmentHistory, UUID> {
+public interface OrdersHistoryRepo extends JpaRepository<OrderHistory, UUID> {
     @Query(
-            value = "SELECT * FROM equipments_history WHERE eq_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
+            value = "SELECT * FROM orders_history WHERE order_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
     Optional<EquipmentHistory> findByEquipmentIdAndTimestamp(@Param("id") UUID id,
