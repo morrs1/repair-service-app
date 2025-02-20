@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public record HistoryClientDTOResponse(
@@ -27,6 +27,6 @@ public record HistoryClientDTOResponse(
         String phoneNumber,
 
         @NotNull(message = "Zoned date time must be not empty")
-        LocalDateTime localDateRange
+        OffsetDateTime localDateRange
 ) {
 }
