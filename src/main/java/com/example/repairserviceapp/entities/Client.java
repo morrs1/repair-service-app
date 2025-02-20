@@ -30,6 +30,12 @@ public class Client extends BaseEntity {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    private String email;
+
+    private String password;
+
+    private String role;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Order> orders;
