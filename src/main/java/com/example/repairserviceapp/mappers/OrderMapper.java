@@ -2,12 +2,19 @@ package com.example.repairserviceapp.mappers;
 
 import com.example.repairserviceapp.DTOs.order.OrderDTORequest;
 import com.example.repairserviceapp.DTOs.order.OrderDTOResponse;
+import com.example.repairserviceapp.DTOs.order.OrderHistoryDTOResponse;
 import com.example.repairserviceapp.entities.Order;
+import com.example.repairserviceapp.entities.OrderHistory;
 import com.example.repairserviceapp.services.*;
 import lombok.Setter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class OrderMapper {
@@ -23,8 +30,6 @@ public abstract class OrderMapper {
     @Setter(onMethod = @__(@Autowired))
     protected OrderOfComponentsService orderOfComponentsService;
 
-    // protected final ZoneOffset offset = ZoneOffset.UTC;
-
     @Mapping(target = "clientId", expression = "java(order.getClient().getId())")
     @Mapping(target = "equipmentId", expression = "java(order.getEquipment().getId())")
     @Mapping(target = "masterId", expression = "java(order.getMaster().getId())")
@@ -39,11 +44,39 @@ public abstract class OrderMapper {
     @Mapping(target = "orderOfComponents", expression = "java(orderOfComponentsService.read(orderDTORequest.orderOfComponentsId()))")
     public abstract Order toOrder(OrderDTORequest orderDTORequest);
 
-//    @Mapping(target = "clientId", expression = "java(orderHistory.getClient().getId())")
-//    @Mapping(target = "equipmentId", expression = "java(orderHistory.getEquipment().getId())")
-//    @Mapping(target = "masterId", expression = "java(orderHistory.getMaster().getId())")
-//    @Mapping(target = "statusId", expression = "java(orderHistory.getStatus().getId())")
-//    @Mapping(target = "orderOfComponentsId", expression = "java(orderHistory.getOrderOfComponents()==null ? null  : order.getOrderOfComponents().getId())")
-//    @Mapping(target = "offsetDateTime", expression = "java(orderHistory.getLocalDateRange().lower().toOffsetDateTime().withOffsetSameInstant(offset))")
-//    public abstract OrderHistoryDTOResponse toDTO(OrderHistory orderHistory);
+    public OrderHistoryDTOResponse toDTO(OrderHistory orderHistory) {
+        if (orderHistory == null) {
+            return null;
+        }
+
+        UUID id;
+        UUID clientId;
+        UUID equipmentId;
+        LocalDate date;
+        UUID masterId;
+        UUID statusId;
+        UUID orderOfComponentsId;
+        OffsetDateTime offsetDateTime;
+
+        id = orderHistory.getId();
+        clientId = orderHistory.getClient().getId();
+        equipmentId = orderHistory.getEquipment().getId();
+        masterId = orderHistory.getMaster().getId();
+        statusId = orderHistory.getStatus().getId();
+        date = orderHistory.getDate();
+        orderOfComponentsId = orderHistory.getOrderOfComponents().getId();
+        offsetDateTime = orderHistory.getLocalDateRange().lower().toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+
+        return new OrderHistoryDTOResponse(
+                id,
+                date,
+                clientId,
+                equipmentId,
+                masterId,
+                statusId,
+                orderOfComponentsId,
+                offsetDateTime
+        );
+    }
+
 }
