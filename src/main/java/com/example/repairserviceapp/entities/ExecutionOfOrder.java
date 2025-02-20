@@ -12,10 +12,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "order_executions")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
 @ToString
-public class ExecutionOfOrder {
+public class ExecutionOfOrder extends BaseEntity {
 
     @Id
     @Column(name = "ex_code")
