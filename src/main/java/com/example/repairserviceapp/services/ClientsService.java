@@ -6,7 +6,6 @@ import com.example.repairserviceapp.exceptions.EntityAlreadyExistsException;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
 import com.example.repairserviceapp.repos.ClientsHistoryRepo;
 import com.example.repairserviceapp.repos.ClientsRepo;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
