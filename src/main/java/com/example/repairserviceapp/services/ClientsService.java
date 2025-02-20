@@ -26,7 +26,6 @@ public class ClientsService {
 
     private final ClientsRepo clientsRepo;
     private final ClientsHistoryRepo clientsHistoryRepo;
-    private final EntityManager entityManager;
 
     public List<Client> readAll() {
         return clientsRepo.findAll();
