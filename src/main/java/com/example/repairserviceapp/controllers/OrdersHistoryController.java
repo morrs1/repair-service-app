@@ -1,9 +1,9 @@
 package com.example.repairserviceapp.controllers;
 
 
-import com.example.repairserviceapp.DTOs.orderOfComponents.OrderOfComponentsHistoryDTOResponse;
-import com.example.repairserviceapp.mappers.OrderOfComponentsMapper;
-import com.example.repairserviceapp.services.OrderOfComponentsService;
+import com.example.repairserviceapp.DTOs.order.OrderHistoryDTOResponse;
+import com.example.repairserviceapp.mappers.OrderMapper;
+import com.example.repairserviceapp.services.OrdersService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +19,16 @@ import java.util.stream.Collectors;
 @RequestMapping("api/order/history")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OrdersHistoryController extends BaseController {
-    private OrderOfComponentsService orderOfComponentsService;
-    private OrderOfComponentsMapper orderOfComponentsMapper;
+    private OrdersService ordersService;
+    private OrderMapper orderMapper;
 
     @Operation(
             summary = "Вернуть старые данные заказа компонента",
             description = "Позволяет возвращать старые данные, которые были проделаны в результате работы БД. "
     )
     @PatchMapping("/{id}")
-    public OrderOfComponentsHistoryDTOResponse restore(@PathVariable("id") UUID id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp) {
-        return orderOfComponentsMapper.toDTO(orderOfComponentsService.restore(id, timestamp));
+    public OrderHistoryDTOResponse restore(@PathVariable("id") UUID id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp) {
+        return orderMapper.toDTO(ordersService.restore(id, timestamp));
     }
 
     @Operation(
@@ -36,11 +36,11 @@ public class OrdersHistoryController extends BaseController {
             description = "Позволяет показывать все заказы компонентов со временем изменений данных"
     )
     @GetMapping("")
-    public List<OrderOfComponentsHistoryDTOResponse> readAllTemporal() {
-        return orderOfComponentsService
+    public List<OrderHistoryDTOResponse> readAllTemporal() {
+        return ordersService
                 .readAllHistory()
                 .stream()
-                .map(clientHistory -> orderOfComponentsMapper.toDTO(clientHistory))
+                .map(clientHistory -> orderMapper.toDTO(clientHistory))
                 .collect(Collectors.toList());
     }
 }
