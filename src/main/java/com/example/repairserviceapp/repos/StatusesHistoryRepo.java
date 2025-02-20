@@ -1,6 +1,5 @@
 package com.example.repairserviceapp.repos;
 
-import com.example.repairserviceapp.entities.EquipmentHistory;
 import com.example.repairserviceapp.entities.StatusHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +16,8 @@ public interface StatusesHistoryRepo extends JpaRepository<StatusHistory, UUID> 
             value = "SELECT * FROM orders_statuses_history WHERE status_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<EquipmentHistory> findByClientIdAndTimestamp(@Param("id") UUID id,
-                                                          @Param("timestamp") OffsetDateTime timestamp);
+    Optional<StatusHistory> findByStatusIdAndTimestamp(
+            @Param("id") UUID id,
+            @Param("timestamp") OffsetDateTime timestamp
+    );
 }

@@ -2,12 +2,19 @@ package com.example.repairserviceapp.mappers;
 
 import com.example.repairserviceapp.DTOs.order.OrderDTORequest;
 import com.example.repairserviceapp.DTOs.order.OrderDTOResponse;
+import com.example.repairserviceapp.DTOs.order.OrderHistoryDTOResponse;
 import com.example.repairserviceapp.entities.Order;
+import com.example.repairserviceapp.entities.OrderHistory;
 import com.example.repairserviceapp.services.*;
 import lombok.Setter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class OrderMapper {
@@ -37,5 +44,39 @@ public abstract class OrderMapper {
     @Mapping(target = "orderOfComponents", expression = "java(orderOfComponentsService.read(orderDTORequest.orderOfComponentsId()))")
     public abstract Order toOrder(OrderDTORequest orderDTORequest);
 
+    public OrderHistoryDTOResponse toDTO(OrderHistory orderHistory) {
+        if (orderHistory == null) {
+            return null;
+        }
+
+        UUID id;
+        UUID clientId;
+        UUID equipmentId;
+        LocalDate date;
+        UUID masterId;
+        UUID statusId;
+        UUID orderOfComponentsId;
+        OffsetDateTime offsetDateTime;
+
+        id = orderHistory.getId();
+        clientId = orderHistory.getClient().getId();
+        equipmentId = orderHistory.getEquipment().getId();
+        masterId = orderHistory.getMaster().getId();
+        statusId = orderHistory.getStatus().getId();
+        date = orderHistory.getDate();
+        orderOfComponentsId = orderHistory.getOrderOfComponents().getId();
+        offsetDateTime = orderHistory.getLocalDateRange().lower().toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+
+        return new OrderHistoryDTOResponse(
+                id,
+                date,
+                clientId,
+                equipmentId,
+                masterId,
+                statusId,
+                orderOfComponentsId,
+                offsetDateTime
+        );
+    }
 
 }

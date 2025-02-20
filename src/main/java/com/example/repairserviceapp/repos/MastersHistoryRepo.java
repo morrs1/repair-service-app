@@ -1,6 +1,5 @@
 package com.example.repairserviceapp.repos;
 
-import com.example.repairserviceapp.entities.EquipmentHistory;
 import com.example.repairserviceapp.entities.MasterHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +14,7 @@ public interface MastersHistoryRepo extends JpaRepository<MasterHistory, UUID> {
             value = "SELECT * FROM masters_list_history WHERE master_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<EquipmentHistory> findByExecutionOfOrderIdAndTimestamp(
+    Optional<MasterHistory> findByMasterIdAndTimestamp(
             @Param("id") UUID id,
             @Param("timestamp") OffsetDateTime timestamp
     );

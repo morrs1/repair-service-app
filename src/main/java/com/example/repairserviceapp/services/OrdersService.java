@@ -1,7 +1,9 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.Order;
+import com.example.repairserviceapp.entities.OrderHistory;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
+import com.example.repairserviceapp.repos.OrdersHistoryRepo;
 import com.example.repairserviceapp.repos.OrdersRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +22,7 @@ import java.util.UUID;
 public class OrdersService {
 
     private final OrdersRepo ordersRepo;
+    private final OrdersHistoryRepo ordersHistoryRepo;
 
     public List<Order> readAll() {
         return ordersRepo.findAll();
@@ -46,5 +50,20 @@ public class OrdersService {
         Order oldOrder = ordersRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no order with this id"));
         ordersRepo.deleteById(id);
         return oldOrder;
+    }
+
+    public List<OrderHistory> readAllHistory() {
+        return ordersHistoryRepo.findAll();
+    }
+
+    @Transactional
+    public OrderHistory restore(UUID orderId, OffsetDateTime timestamp) {
+        OrderHistory historyClient = ordersHistoryRepo
+                .findByOrderIdAndTimestamp(orderId, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "There is no order with this id " + orderId + " and timestamp " + timestamp
+                ));
+
+        return ordersHistoryRepo.save(historyClient);
     }
 }

@@ -1,13 +1,16 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.OrderOfComponents;
+import com.example.repairserviceapp.entities.OrderOfComponentsHistory;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
+import com.example.repairserviceapp.repos.OrderOfComponentsHistoryRepo;
 import com.example.repairserviceapp.repos.OrderOfComponentsRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class OrderOfComponentsService {
 
     private final OrderOfComponentsRepo orderOfComponentsRepo;
+    private final OrderOfComponentsHistoryRepo orderOfComponentsHistoryRepo;
 
     public List<OrderOfComponents> readAll() {
         return orderOfComponentsRepo.findAll();
@@ -47,5 +51,21 @@ public class OrderOfComponentsService {
         OrderOfComponents oldOrderOfComponents = orderOfComponentsRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no order of components with this id"));
         orderOfComponentsRepo.deleteById(id);
         return oldOrderOfComponents;
+    }
+
+    public List<OrderOfComponentsHistory> readAllHistory() {
+        return orderOfComponentsHistoryRepo.findAll();
+    }
+
+    @Transactional
+    public OrderOfComponentsHistory restore(UUID masterId, OffsetDateTime timestamp) {
+
+        OrderOfComponentsHistory historyMaster = orderOfComponentsHistoryRepo
+                .findByOrderOfComponentsIdAndTimestamp(masterId, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "There is no master with this id " + masterId + " and this timestamp " + timestamp
+                ));
+
+        return orderOfComponentsHistoryRepo.save(historyMaster);
     }
 }

@@ -16,6 +16,8 @@ public interface ClientsHistoryRepo extends JpaRepository<ClientHistory, UUID> {
             value = "SELECT * FROM clients_history WHERE client_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<ClientHistory> findByClientIdAndTimestamp(@Param("id") UUID id,
-                                                      @Param("timestamp") OffsetDateTime timestamp);
+    Optional<ClientHistory> findByClientIdAndTimestamp(
+            @Param("id") UUID id,
+            @Param("timestamp") OffsetDateTime timestamp
+    );
 }
