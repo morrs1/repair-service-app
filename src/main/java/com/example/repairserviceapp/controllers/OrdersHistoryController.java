@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/order/history")
+@RequestMapping("api/history/order")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OrdersHistoryController extends BaseController {
     private OrdersService ordersService;
