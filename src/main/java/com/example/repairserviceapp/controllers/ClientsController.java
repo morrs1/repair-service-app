@@ -74,6 +74,4 @@ public class ClientsController extends BaseController {
     public ClientDTO delete(@PathVariable("id") UUID id) {
       return clientsMapper.toDTO(clientsService.delete(id));
     }
-
-
 }

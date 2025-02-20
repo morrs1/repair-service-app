@@ -9,13 +9,14 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "masters_list")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Setter
 @Getter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Master {
+public class Master extends BaseEntity {
 
     @Id
     @Column(name = "master_code")

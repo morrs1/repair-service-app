@@ -10,10 +10,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "posts")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Setter
 @Getter
 @ToString
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @Column(name = "post_code")

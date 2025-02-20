@@ -8,13 +8,14 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "clients")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter
 @Setter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+public class Client extends BaseEntity {
 
     @Id
     @Column(name = "client_code")
@@ -32,5 +33,4 @@ public class Client {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Order> orders;
-
 }
