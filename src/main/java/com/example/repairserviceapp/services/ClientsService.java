@@ -36,7 +36,7 @@ public class ClientsService {
 
     @Transactional
     public Client create(Client client) {
-        if (exists(client.getName(), client.getSurname(), client.getPatronymic())) {
+        if (exists(client.getName(), client.getSurname(), client.getPatronymic()) || exists(client.getEmail())) {
             throw new EntityAlreadyExistsException("This client already exists");
         }
         client.setId(UUID.randomUUID());
@@ -60,6 +60,12 @@ public class ClientsService {
     private boolean exists(String name, String surname, String patronymic) {
         return clientsRepo.exists(Example.of(
                 Client.builder().name(name).surname(surname).patronymic(patronymic).build()
+        ));
+    }
+
+    public boolean exists(String email) {
+        return clientsRepo.exists(Example.of(
+                Client.builder().email(email).build()
         ));
     }
 
