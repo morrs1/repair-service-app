@@ -1,12 +1,8 @@
 package com.example.repairserviceapp.entities;
 
-import io.hypersistence.utils.hibernate.type.range.PostgreSQLRangeType;
-import io.hypersistence.utils.hibernate.type.range.Range;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client {
+public class Client extends BaseEntity {
 
     @Id
     @Column(name = "client_code")
@@ -37,11 +33,4 @@ public class Client {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Order> orders;
-
-    @Type(PostgreSQLRangeType.class)
-    @Column(
-            name="sys_period",
-            columnDefinition = "tstzrange"
-    )
-    private Range<ZonedDateTime> localDateRange;
 }
