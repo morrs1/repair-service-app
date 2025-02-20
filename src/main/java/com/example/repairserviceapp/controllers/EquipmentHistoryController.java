@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class EquipmentHistoryController extends BaseController {
     private EquipmentsService equipmentsService;
-    private EquipmentsMapper clientsMapper;
+    private EquipmentsMapper equipmentsMapper;
 
     @Operation(
             summary = "Вернуть старые данные пользователя по UUID",
@@ -29,7 +29,7 @@ public class EquipmentHistoryController extends BaseController {
     )
     @PatchMapping("/{id}")
     public HistoryEquipmentDTOResponse restore(@PathVariable("id") UUID id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp) {
-        return clientsMapper.toDTO(equipmentsService.restore(id, timestamp));
+        return equipmentsMapper.toDTO(equipmentsService.restore(id, timestamp));
     }
 
     @Operation(
@@ -41,7 +41,7 @@ public class EquipmentHistoryController extends BaseController {
         return equipmentsService
                 .readAllHistory()
                 .stream()
-                .map(clientHistory -> clientsMapper.toDTO(clientHistory))
+                .map(clientHistory -> equipmentsMapper.toDTO(clientHistory))
                 .collect(Collectors.toList());
     }
 }
