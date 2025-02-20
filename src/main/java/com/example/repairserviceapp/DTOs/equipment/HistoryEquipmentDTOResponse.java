@@ -1,6 +1,6 @@
 package com.example.repairserviceapp.DTOs.equipment;
 
-import com.example.repairserviceapp.DTOs.OrderDTO;
+import com.example.repairserviceapp.DTOs.order.OrderDTOResponse;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,7 +26,7 @@ public record HistoryEquipmentDTOResponse(
         String model,
 
         @NotNull(message = "orders field can't be null, please provide some data")
-        List<OrderDTO> orders,
+        List<OrderDTOResponse> orders,
 
         @NotEmpty(message = "offsetDateTime field can't be empty, please provide it")
         OffsetDateTime offsetDateTime

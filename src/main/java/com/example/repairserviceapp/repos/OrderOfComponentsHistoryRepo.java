@@ -1,6 +1,5 @@
 package com.example.repairserviceapp.repos;
 
-import com.example.repairserviceapp.entities.EquipmentHistory;
 import com.example.repairserviceapp.entities.OrderOfComponentsHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,7 @@ public interface OrderOfComponentsHistoryRepo extends JpaRepository<OrderOfCompo
             value = "SELECT * FROM components_order_history WHERE co_code = :id AND sys_period @> (:timestamp)::TIMESTAMPTZ",
             nativeQuery = true
     )
-    Optional<EquipmentHistory> findByExecutionOfOrderIdAndTimestamp(
+    Optional<OrderOfComponentsHistory> findByOrderOfComponentsIdAndTimestamp(
             @Param("id") UUID id,
             @Param("timestamp") OffsetDateTime timestamp
     );
