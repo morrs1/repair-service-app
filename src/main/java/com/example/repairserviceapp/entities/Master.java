@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "masters_list")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Setter
 @Getter
 @ToString
