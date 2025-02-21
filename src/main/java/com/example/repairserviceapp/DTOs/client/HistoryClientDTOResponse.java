@@ -1,5 +1,6 @@
 package com.example.repairserviceapp.DTOs.client;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -7,9 +8,16 @@ import jakarta.validation.constraints.Size;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@Schema(description = "a user entity that uses our product, this entity is displayed only by the admin for temporality")
 public record HistoryClientDTOResponse(
+        @Schema(
+                description = "Unique identifier of client (uuid)",
+                example = "4f6652f1-b61c-4b30-8776-e73a107cd97f",
+                accessMode = Schema.AccessMode.READ_ONLY
+        )
         UUID id,
 
+        @Schema(description = "Surname of client", example = "Ivanov")
         @NotNull(message = "Surname must be not empty")
         @Size(min = 2, max = 30, message = "Size must be between 2 and 30")
         String surname,
