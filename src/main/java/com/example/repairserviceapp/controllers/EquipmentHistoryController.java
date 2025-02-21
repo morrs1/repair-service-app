@@ -24,7 +24,7 @@ public class EquipmentHistoryController extends BaseController {
     private EquipmentsMapper equipmentsMapper;
 
     @Operation(
-            summary = "Вернуть старые данные пользователя по UUID",
+            summary = "Вернуть старые данные оборудования по UUID",
             description = "Позволяет возвращать старые данные, которые были проделаны в результате работы БД. "
     )
     @PatchMapping("/{id}")
@@ -33,7 +33,7 @@ public class EquipmentHistoryController extends BaseController {
     }
 
     @Operation(
-            summary = "Показывает всех пользователей в темпоральной таблице со временем",
+            summary = "Показывает все оборудование в темпоральной таблице со временем",
             description = "Позволяет показывать всех пользователей с временем изменений данных"
     )
     @GetMapping("")

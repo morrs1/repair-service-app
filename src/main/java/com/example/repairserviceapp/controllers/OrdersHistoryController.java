@@ -23,7 +23,7 @@ public class OrdersHistoryController extends BaseController {
     private OrderMapper orderMapper;
 
     @Operation(
-            summary = "Вернуть старые данные заказа компонента",
+            summary = "Вернуть старые данные заказа пользователя по ремонту",
             description = "Позволяет возвращать старые данные, которые были проделаны в результате работы БД. "
     )
     @PatchMapping("/{id}")
