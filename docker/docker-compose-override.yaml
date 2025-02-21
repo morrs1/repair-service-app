@@ -19,6 +19,8 @@ services:
         condition: service_healthy
       liquibase:
         condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     networks:
       - my_network
     env_file:
@@ -90,10 +92,30 @@ services:
     env_file:
       - ../.env
 
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    restart: on-failure
+    ports:
+      - '${REDIS_PORT}:6379'
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    command: [ "redis-server", "--appendonly yes", "--requirepass", "${REDIS_PASSWORD}" ]
+    volumes:
+      - redis_data:/data
+    env_file:
+      - ../.env
+    networks:
+      - my_network
+
 
 volumes:
   postgres_data:
   pgadmin_data:
+  redis_data:
 
 networks:
   my_network:
