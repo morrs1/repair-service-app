@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Tag(name = "Контроллер для управления историей мастеров", description = "Здесь реализуется свойство темпоральности")
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping("/api/history/master")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -41,7 +43,7 @@ public class MastersHistoryController extends BaseController {
         return masterService
                 .readAllHistory()
                 .stream()
-                .map(clientHistory -> masterMapper.toDTO(clientHistory))
+                .map(masterMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

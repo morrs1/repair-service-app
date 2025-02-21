@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Tag(name = "Контроллер для управления заказов компонентов", description = "Здесь реализуется свойство темпоральности")
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping("/api/history/order-of-components")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -41,7 +43,7 @@ public class OrderOfComponentsHistoryController extends BaseController {
         return orderOfComponentsService
                 .readAllHistory()
                 .stream()
-                .map(clientHistory -> orderOfComponentsMapper.toDTO(clientHistory))
+                .map(orderOfComponentsMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }
