@@ -67,7 +67,7 @@ public class MastersService {
     }
 
     @Transactional
-    public Master restore(UUID masterId, OffsetDateTime timestamp) {
+    public MasterHistory restore(UUID masterId, OffsetDateTime timestamp) {
 
         MasterHistory historyMaster = mastersHistoryRepo
                 .findByMasterIdAndTimestamp(masterId, timestamp)

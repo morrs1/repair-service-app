@@ -1,13 +1,16 @@
 package com.example.repairserviceapp.services;
 
 import com.example.repairserviceapp.entities.ExecutionOfOrder;
+import com.example.repairserviceapp.entities.ExecutionOfOrderHistory;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
+import com.example.repairserviceapp.repos.ExecutionOfOrderHistoryRepo;
 import com.example.repairserviceapp.repos.ExecutionOfOrderRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,8 +18,8 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ExecutionOfOrderService {
-
     private ExecutionOfOrderRepo executionOfOrderRepo;
+    private ExecutionOfOrderHistoryRepo executionOfOrderHistoryRepo;
 
     public List<ExecutionOfOrder> readAll() {
         return executionOfOrderRepo.findAll();
@@ -44,6 +47,21 @@ public class ExecutionOfOrderService {
         ExecutionOfOrder oldExecutionOfOrder = executionOfOrderRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no execution of order with this id"));
         executionOfOrderRepo.deleteById(id);
         return oldExecutionOfOrder;
+    }
+
+    public List<ExecutionOfOrderHistory> readAllHistory() {
+        return executionOfOrderHistoryRepo.findAll();
+    }
+
+    @Transactional
+    public ExecutionOfOrderHistory restore(UUID orderId, OffsetDateTime timestamp) {
+
+        ExecutionOfOrderHistory executionOfOrderHistory = executionOfOrderHistoryRepo
+                .findByExecutionOfOrderIdAndTimestamp(orderId, timestamp)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "There is no order with this id " + orderId + " or timestamp " + timestamp));
+
+        return executionOfOrderHistoryRepo.save(executionOfOrderHistory);
     }
 
 }

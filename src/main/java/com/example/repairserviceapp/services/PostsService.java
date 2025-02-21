@@ -55,13 +55,13 @@ public class PostsService {
     }
 
     @Transactional
-    public PostHistory restore(UUID orderId, OffsetDateTime timestamp) {
-        PostHistory historyClient = postsHistoryRepo
-                .findByPostIdAndTimestamp(orderId, timestamp)
+    public PostHistory restore(UUID postId, OffsetDateTime timestamp) {
+        PostHistory postHistory = postsHistoryRepo
+                .findByPostIdAndTimestamp(postId, timestamp)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "There is no order with this id " + orderId + " and timestamp " + timestamp
+                        "There is no post with this id " + postId + " and timestamp " + timestamp
                 ));
 
-        return postsHistoryRepo.save(historyClient);
+        return postsHistoryRepo.save(postHistory);
     }
 }

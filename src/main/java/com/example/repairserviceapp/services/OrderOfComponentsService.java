@@ -58,14 +58,14 @@ public class OrderOfComponentsService {
     }
 
     @Transactional
-    public OrderOfComponentsHistory restore(UUID masterId, OffsetDateTime timestamp) {
+    public OrderOfComponentsHistory restore(UUID orderOfComponentId, OffsetDateTime timestamp) {
 
-        OrderOfComponentsHistory historyMaster = orderOfComponentsHistoryRepo
-                .findByOrderOfComponentsIdAndTimestamp(masterId, timestamp)
+        OrderOfComponentsHistory historyOrder = orderOfComponentsHistoryRepo
+                .findByOrderOfComponentsIdAndTimestamp(orderOfComponentId, timestamp)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "There is no master with this id " + masterId + " and this timestamp " + timestamp
+                        "There is no order with this id " + orderOfComponentId + " and this timestamp " + timestamp
                 ));
 
-        return orderOfComponentsHistoryRepo.save(historyMaster);
+        return orderOfComponentsHistoryRepo.save(historyOrder);
     }
 }
