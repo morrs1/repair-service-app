@@ -4,10 +4,12 @@ import com.example.repairserviceapp.DTOs.client.HistoryClientDTOResponse;
 import com.example.repairserviceapp.mappers.ClientsMapper;
 import com.example.repairserviceapp.services.ClientsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -16,6 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Tag(name = "Контроллер для управления историей клиентов", description = "Здесь реализуется свойство темпоральности")
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping("/api/history/client")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -28,7 +31,10 @@ public class ClientsHistoryController extends BaseController {
             description = "Позволяет возвращать старые данные, которые были проделаны в результате работы БД. "
     )
     @PatchMapping("/{id}")
-    public HistoryClientDTOResponse restore(@PathVariable("id") UUID id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp) {
+    public HistoryClientDTOResponse restore(
+            @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id,
+            @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp
+    ) {
         return clientsMapper.toDTO(clientsService.restore(id, timestamp));
     }
 
@@ -41,7 +47,7 @@ public class ClientsHistoryController extends BaseController {
             return clientsService
                     .readAllHistory()
                     .stream()
-                    .map(clientHistory -> clientsMapper.toDTO(clientHistory))
+                    .map(clientsMapper::toDTO)
                     .collect(Collectors.toList());
     }
 }

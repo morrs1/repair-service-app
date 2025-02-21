@@ -4,6 +4,7 @@ import com.example.repairserviceapp.DTOs.ClientDTO;
 import com.example.repairserviceapp.mappers.ClientsMapper;
 import com.example.repairserviceapp.services.ClientsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,9 @@ public class ClientsController extends BaseController {
             description = "Позволяет посмотреть данные об одном пользователе, зная его уникальный идентификатор. "
     )
     @GetMapping("/{id}")
-    public ClientDTO read(@PathVariable("id") UUID id) {
+    public ClientDTO read(
+            @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id
+    ) {
         return clientsMapper.toDTO(clientsService.read(id));
     }
 
@@ -61,7 +64,11 @@ public class ClientsController extends BaseController {
             description = "Позволяет обновлять данные об отдельном пользователе, зная его id. "
     )
     @PatchMapping("/{id}")
-    public ClientDTO update(@PathVariable("id") UUID id, @RequestBody @Valid ClientDTO clientDTO, BindingResult bindingResult) {
+    public ClientDTO update(
+            @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id,
+            @RequestBody @Valid ClientDTO clientDTO,
+            BindingResult bindingResult
+    ) {
         validate(bindingResult, "Update client failed");
         return clientsMapper.toDTO(clientsService.update(id, clientsMapper.toClient(clientDTO)));
     }
@@ -71,7 +78,9 @@ public class ClientsController extends BaseController {
             description = "Позволяет удалять данные об отдельном пользователе, зная его id"
     )
     @DeleteMapping("/{id}")
-    public ClientDTO delete(@PathVariable("id") UUID id) {
+    public ClientDTO delete(
+            @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id
+    ) {
       return clientsMapper.toDTO(clientsService.delete(id));
     }
 }

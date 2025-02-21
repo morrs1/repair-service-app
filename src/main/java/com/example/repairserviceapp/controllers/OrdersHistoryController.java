@@ -5,9 +5,11 @@ import com.example.repairserviceapp.DTOs.order.OrderHistoryDTOResponse;
 import com.example.repairserviceapp.mappers.OrderMapper;
 import com.example.repairserviceapp.services.OrdersService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Tag(name = "Контроллер для управления историей заказов клиента", description = "Здесь реализуется свойство темпоральности")
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping("api/history/order")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -40,7 +44,7 @@ public class OrdersHistoryController extends BaseController {
         return ordersService
                 .readAllHistory()
                 .stream()
-                .map(clientHistory -> orderMapper.toDTO(clientHistory))
+                .map(orderMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

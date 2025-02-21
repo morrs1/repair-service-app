@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class ComponentsWarehouse {
+public class ComponentsWarehouse extends BaseEntity {
 
     @Id
     @Column(name = "components_code")
