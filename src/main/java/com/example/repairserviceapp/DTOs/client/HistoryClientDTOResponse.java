@@ -34,6 +34,7 @@ public record HistoryClientDTOResponse(
         @Pattern(regexp = "^(\\+7|8)[0-9]{10}$", message = "Phone number must be valid")
         String phoneNumber,
 
+        @Schema(description = "Time that shows the relevance and status of the data", example = "2007-12-03T10:15:30+01:00")
         @NotNull(message = "Zoned date time must be not empty")
         OffsetDateTime offsetDateTime
 ) {
