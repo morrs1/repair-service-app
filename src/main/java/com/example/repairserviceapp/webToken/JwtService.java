@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +26,22 @@ public class JwtService {
 
     private static final long VALIDITY = TimeUnit.MINUTES.toMillis(30);
 
-    public String generateToken(UserDetails userDetails) {
+    public ResponseEntity<Map<String, String>> generateToken(UserDetails userDetails) {
         Map<String, String> claims = new HashMap<>();
         claims.put("iss", "https://secure.genuinecoder.com");
         log.info("Generating token for user: {}", userDetails.getUsername());
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .claims(claims)
                 .subject(userDetails.getUsername())
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(VALIDITY)))
                 .signWith(generateKey())
                 .compact();
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+
+        return ResponseEntity.ok(response);
     }
 
     public boolean isTokenValid(String jwt) {
