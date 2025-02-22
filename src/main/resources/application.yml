@@ -20,6 +20,8 @@ spring:
     phone_number: ${ADMIN_PHONE_NUMBER}
     email: ${ADMIN_EMAIL}
     password: ${ADMIN_PASSWORD}
+  secret-Key: ${SECRET_KEY}
+
 logging:
   file:
     path: ./../../../logs/
