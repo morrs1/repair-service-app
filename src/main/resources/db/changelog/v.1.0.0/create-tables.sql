@@ -46,7 +46,7 @@ CREATE TABLE clients
     phone_number VARCHAR     NOT NULL,
     email        VARCHAR     NOT NULL UNIQUE,
     password     VARCHAR     NOT NULL,
-    role         VARCHAR       NOT NULL DEFAULT 'USER'
+    role         VARCHAR     DEFAULT 'USER'
 );
 
 --changeset DDD:1.0.6
