@@ -51,7 +51,7 @@ public class AdminSetupRunner implements CommandLineRunner {
                     .password(password)
                     .role(Roles.ADMIN.getValue())
                     .build();
-            clientsService.create(admin);
+            clientsService.create(admin, Roles.ADMIN.getValue());
         }
 
     }

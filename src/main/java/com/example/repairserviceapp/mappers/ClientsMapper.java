@@ -1,6 +1,7 @@
 package com.example.repairserviceapp.mappers;
 
-import com.example.repairserviceapp.DTOs.ClientDTO;
+import com.example.repairserviceapp.DTOs.client.ClientDTORequest;
+import com.example.repairserviceapp.DTOs.client.ClientDTOResponse;
 import com.example.repairserviceapp.DTOs.client.HistoryClientDTOResponse;
 import com.example.repairserviceapp.entities.Client;
 import com.example.repairserviceapp.entities.ClientHistory;
@@ -13,9 +14,9 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public abstract class ClientsMapper {
 
-    public abstract Client toClient(ClientDTO clientDTO);
+    public abstract Client toClient(ClientDTORequest clientDTORequest);
 
-    public abstract ClientDTO toDTO(Client client);
+    public abstract ClientDTOResponse toDTO(Client client);
 
     public HistoryClientDTOResponse toDTO(ClientHistory clientDTO) {
         if (clientDTO == null) {
