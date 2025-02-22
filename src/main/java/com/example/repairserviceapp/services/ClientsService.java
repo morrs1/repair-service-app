@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class ClientsService {
 
     private final ClientsRepo clientsRepo;
     private final ClientsHistoryRepo clientsHistoryRepo;
+    private BCryptPasswordEncoder passwordEncoder;
 
     public List<Client> readAll() {
         return clientsRepo.findAll();
@@ -35,13 +37,17 @@ public class ClientsService {
     }
 
     @Transactional
-    public Client create(Client client) {
+    public Client create(Client client, String role) {
         if (exists(client.getName(), client.getSurname(), client.getPatronymic()) || exists(client.getEmail())) {
             throw new EntityAlreadyExistsException("This client already exists");
         }
         client.setId(UUID.randomUUID());
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
+        client.setRole(role);
         return clientsRepo.save(client);
     }
+
+
 
     @Transactional
     public Client delete(UUID id) {
