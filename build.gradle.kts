@@ -4,7 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
 }
 
-extra["hibernate.version"] = "6.5.0.Final"
+extra["hibernate.version"] = "6.5.2.Final"
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 
