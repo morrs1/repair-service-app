@@ -113,6 +113,13 @@ docker compose -f docker/docker-compose-override.yaml --env-file=.env up
 
 ...
 
+## Документация `Swagger`
+
+Чтобы перейти в `Swagger` используйте url: `http://localhost:<port>/swagger-ui/index.html#/`, где `port` вы определили в `.env`.
+Если вы запускаете из-под `IDEA`, то переходите по порту `8080`.
+
+![изображение](https://github.com/user-attachments/assets/9afd0b1c-813e-4b8f-b0bb-8162e513ba7d)
+
 
 ## Полезные ссылки
 
