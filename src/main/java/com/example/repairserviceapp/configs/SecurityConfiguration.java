@@ -1,5 +1,6 @@
 package com.example.repairserviceapp.configs;
 
+import com.example.repairserviceapp.enums.Roles;
 import com.example.repairserviceapp.webToken.JwtAuthFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SecurityConfiguration {
 
@@ -32,7 +35,7 @@ public class SecurityConfiguration {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(
-                            "/api/auth", "/swagger-ui/**", "/api/v1/auth/**",
+                            "/api/auth","/api/client",  "/swagger-ui/**", "/api/v1/auth/**",
                             "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**",
                             "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
                             "/configuration/security", "/webjars/**", "/swagger-ui.html",

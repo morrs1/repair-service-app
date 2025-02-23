@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,7 @@ public class ClientsController extends BaseController {
             description = "Позволяет просмотреть всех пользователей."
     )
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public List<ClientDTOResponse> readAll() {
         return clientsService
                 .readAll()
@@ -47,6 +49,7 @@ public class ClientsController extends BaseController {
             description = "Позволяет посмотреть данные об одном пользователе, зная его уникальный идентификатор. "
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public ClientDTOResponse read(
             @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id
     ) {
@@ -58,6 +61,7 @@ public class ClientsController extends BaseController {
             description = "Позволяет создать одного отдельного пользователя"
     )
     @PostMapping("")
+//    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public ClientDTOResponse create(@RequestBody @Valid ClientDTORequest clientDTORequest, BindingResult bindingResult) {
         return create(clientDTORequest, bindingResult, Roles.USER.getValue());
     }
@@ -67,6 +71,7 @@ public class ClientsController extends BaseController {
             description = "Позволяет обновлять данные об отдельном пользователе, зная его id. "
     )
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ClientDTOResponse update(
             @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id,
             @RequestBody @Valid ClientDTORequest clientDTORequest,
@@ -81,6 +86,7 @@ public class ClientsController extends BaseController {
             description = "Позволяет удалять данные об отдельном пользователе, зная его id"
     )
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ClientDTOResponse delete(
             @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id
     ) {
@@ -89,6 +95,7 @@ public class ClientsController extends BaseController {
 
 
     @PostMapping("/create-admin")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ClientDTOResponse createAdmin(@RequestBody @Valid ClientDTORequest clientDTORequest, BindingResult bindingResult) {
         return create(clientDTORequest, bindingResult, Roles.ADMIN.getValue());
     }
