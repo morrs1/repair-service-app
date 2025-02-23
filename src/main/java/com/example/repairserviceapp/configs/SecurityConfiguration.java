@@ -31,7 +31,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/api/auth", "/swagger-ui/**").permitAll();
+                    registry.requestMatchers(
+                            "/api/auth", "/swagger-ui/**", "/api/v1/auth/**",
+                            "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**",
+                            "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
+                            "/configuration/security", "/webjars/**", "/swagger-ui.html",
+                            "/api/test/**", "/authenticate"
+                    ).permitAll();
                     registry.requestMatchers("/api/history/**").hasRole("ADMIN");
                     registry.anyRequest().authenticated();
                 })
