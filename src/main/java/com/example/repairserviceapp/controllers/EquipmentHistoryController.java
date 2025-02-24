@@ -35,7 +35,7 @@ public class EquipmentHistoryController extends BaseController {
             @PathVariable("id") @Parameter(description = "Уникальный идентификатор оборудования", required = true) UUID id,
             @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp
     ) {
-        return equipmentsMapper.toDTO(equipmentsService.restore(id, timestamp));
+        return equipmentsMapper.toHistoryDTO(equipmentsService.restore(id, timestamp));
     }
 
     @Operation(
@@ -47,7 +47,7 @@ public class EquipmentHistoryController extends BaseController {
         return equipmentsService
                 .readAllHistory()
                 .stream()
-                .map(equipmentsMapper::toDTO)
+                .map(equipmentsMapper::toHistoryDTO)
                 .collect(Collectors.toList());
     }
 }
