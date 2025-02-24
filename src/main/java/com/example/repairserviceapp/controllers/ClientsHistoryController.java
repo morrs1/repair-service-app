@@ -1,7 +1,7 @@
 package com.example.repairserviceapp.controllers;
 
 import com.example.repairserviceapp.DTOs.client.HistoryClientDTOResponse;
-import com.example.repairserviceapp.mappers.ClientsHistoryMapper;
+import com.example.repairserviceapp.mappers.ClientsMapper;
 import com.example.repairserviceapp.services.ClientsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ClientsHistoryController extends BaseController {
     private ClientsService clientsService;
-    private ClientsHistoryMapper clientsHistoryMapper;
+    private ClientsMapper clientsMapper;
 
     @Operation(
             summary = "Вернуть старые данные пользователя по UUID",
@@ -35,7 +35,7 @@ public class ClientsHistoryController extends BaseController {
             @PathVariable("id") @Parameter(description = "Уникальный идентификатор клиента", required = true) UUID id,
             @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp
     ) {
-        return clientsHistoryMapper.toDTO(clientsService.restore(id, timestamp));
+        return clientsMapper.toHistoryDTO(clientsService.restore(id, timestamp));
     }
 
     @Operation(
@@ -47,7 +47,7 @@ public class ClientsHistoryController extends BaseController {
             return clientsService
                     .readAllHistory()
                     .stream()
-                    .map(clientsHistoryMapper::toDTO)
+                    .map(clientsMapper::toHistoryDTO)
                     .collect(Collectors.toList());
     }
 }

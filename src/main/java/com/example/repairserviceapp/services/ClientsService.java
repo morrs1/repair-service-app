@@ -4,7 +4,6 @@ import com.example.repairserviceapp.entities.Client;
 import com.example.repairserviceapp.entities.ClientHistory;
 import com.example.repairserviceapp.exceptions.EntityAlreadyExistsException;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
-import com.example.repairserviceapp.mappers.ClientsMapper;
 import com.example.repairserviceapp.repos.ClientsHistoryRepo;
 import com.example.repairserviceapp.repos.ClientsRepo;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,6 @@ public class ClientsService {
     private final ClientsRepo clientsRepo;
     private final ClientsHistoryRepo clientsHistoryRepo;
     private BCryptPasswordEncoder passwordEncoder;
-    private final ClientsMapper clientsMapper;
 
     public List<Client> readAll() {
         return clientsRepo.findAll();
@@ -84,14 +82,24 @@ public class ClientsService {
     @Transactional
     public Client restore(UUID clientId, OffsetDateTime timestamp) {
 
+        log.debug("Restoring client with id {}", clientId);
+
         ClientHistory historyClient = clientsHistoryRepo
                 .findByClientIdAndTimestamp(clientId, timestamp)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "There is no client with this id " + clientId + " and this timestamp " + timestamp
                 ));
 
-        log.info("{}", clientsMapper.toClient(historyClient));
+        log.debug("Founded history client: {}", historyClient);
 
-        return clientsRepo.save(clientsMapper.toClient(historyClient));
+        clientsRepo.syncClientsFromHistory(historyClient);
+
+        log.debug("Synchronized history client");
+
+        clientsHistoryRepo.delete(historyClient);
+
+        log.debug("deleted client");
+
+        return clientsRepo.findById(historyClient.getId()).orElseThrow(() -> new EntityNotFoundException("There is no client with this id. " + clientId));
     }
 }
