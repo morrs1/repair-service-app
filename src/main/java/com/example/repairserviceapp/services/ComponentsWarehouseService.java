@@ -24,7 +24,6 @@ public class ComponentsWarehouseService {
 
     private final ComponentsWarehouseRepo componentsWarehouseRepo;
     private final ComponentsWarehouseHistoryRepo componentsWarehouseHistoryRepo;
-    private final ComponentsWarehouseMapper componentsWarehouseMapper;
 
     public List<ComponentsWarehouse> readAll() {
         return componentsWarehouseRepo.findAll();

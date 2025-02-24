@@ -5,7 +5,6 @@ import com.example.repairserviceapp.DTOs.componentsWarehouse.ComponentsWarehouse
 import com.example.repairserviceapp.DTOs.componentsWarehouse.ComponentsWarehouseHistoryDTOResponse;
 import com.example.repairserviceapp.entities.BaseComponentsWarehouse;
 import com.example.repairserviceapp.entities.ComponentsWarehouse;
-import com.example.repairserviceapp.entities.ComponentsWarehouseHistory;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
