@@ -2,7 +2,7 @@ package com.example.repairserviceapp.controllers;
 
 import com.example.repairserviceapp.DTOs.master.HistoryMasterDTOResponse;
 import com.example.repairserviceapp.entities.Master;
-import com.example.repairserviceapp.mappers.MasterHistoryMapper;
+import com.example.repairserviceapp.mappers.MasterMapper;
 import com.example.repairserviceapp.services.MastersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MastersHistoryController extends BaseController {
     private MastersService masterService;
-    private MasterHistoryMapper masterHistoryMapper;
+    private MasterMapper masterMapper;
 
     @Operation(
             summary = "Вернуть старые данные мастера по UUID",
@@ -38,7 +38,7 @@ public class MastersHistoryController extends BaseController {
 
         log.debug("Restored master: {}",  restored);
 
-        return masterHistoryMapper.toDTO(restored);
+        return masterMapper.toHistoryDTO(restored);
     }
 
     @Operation(
@@ -50,7 +50,7 @@ public class MastersHistoryController extends BaseController {
         return masterService
                 .readAllHistory()
                 .stream()
-                .map(masterHistoryMapper::toDTO)
+                .map(masterMapper::toHistoryDTO)
                 .collect(Collectors.toList());
     }
 }

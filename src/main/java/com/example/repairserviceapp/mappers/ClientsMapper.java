@@ -5,20 +5,16 @@ import com.example.repairserviceapp.DTOs.client.ClientDTOResponse;
 import com.example.repairserviceapp.DTOs.client.HistoryClientDTOResponse;
 import com.example.repairserviceapp.entities.BaseClient;
 import com.example.repairserviceapp.entities.Client;
-import com.example.repairserviceapp.entities.ClientHistory;
 import org.mapstruct.Mapper;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.UUID;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public abstract class ClientsMapper {
+public abstract class ClientsMapper extends BaseMapper {
 
     public abstract Client toClient(ClientDTORequest clientDTORequest);
 
     public abstract ClientDTOResponse toDTO(Client client);
 
-    public abstract ClientHistory toClientHistory(Client clientHistory);
-    public abstract Client toClient(ClientHistory clientHistory);
+    @Mapping(target = "offsetDateTime", expression = "java(convertTime(baseClient.getLocalDateRange()))")
+    public abstract HistoryClientDTOResponse toHistoryDTO(BaseClient baseClient);
 }
