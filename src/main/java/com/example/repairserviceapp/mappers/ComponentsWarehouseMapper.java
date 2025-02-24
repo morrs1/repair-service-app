@@ -18,9 +18,6 @@ public abstract class ComponentsWarehouseMapper extends BaseMapper {
 
     public abstract ComponentsWarehouse toEntity(ComponentsWarehouseDTORequest dto);
 
-    @Mapping(target = "ordersOfComponents", ignore = true)
-    public abstract ComponentsWarehouse toComponentsWarehouse(ComponentsWarehouseHistory componentsWarehouseHistory);
-
     @Mapping(target = "offsetDateTime", expression = "java(convertTime(baseComponentsWarehouse.getLocalDateRange()))")
     public abstract ComponentsWarehouseHistoryDTOResponse toHistoryDTO(BaseComponentsWarehouse baseComponentsWarehouse);
 }
