@@ -12,7 +12,6 @@ import java.util.UUID;
 @MappedSuperclass
 @Getter
 @Setter
-@ToString
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,4 +37,17 @@ public abstract class BaseMaster extends BaseEntity {
 
     @Column(name = "date_of_employment")
     private LocalDate dateOfEmployment;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id =" + id +
+                ", surname ='" + surname + '\'' +
+                ", name ='" + name + '\'' +
+                ", patronymic ='" + patronymic + '\'' +
+                ", address ='" + address + '\'' +
+                ", phoneNumber ='" + phoneNumber + '\'' +
+                ", dateOfEmployment =" + dateOfEmployment +
+                " }";
+    }
 }
