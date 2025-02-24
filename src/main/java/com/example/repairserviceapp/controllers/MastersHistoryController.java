@@ -1,11 +1,13 @@
 package com.example.repairserviceapp.controllers;
 
 import com.example.repairserviceapp.DTOs.master.HistoryMasterDTOResponse;
-import com.example.repairserviceapp.mappers.MasterMapper;
+import com.example.repairserviceapp.entities.Master;
+import com.example.repairserviceapp.mappers.MasterHistoryMapper;
 import com.example.repairserviceapp.services.MastersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,9 +23,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/history/master")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class MastersHistoryController extends BaseController {
     private MastersService masterService;
-    private MasterMapper masterMapper;
+    private MasterHistoryMapper masterHistoryMapper;
 
     @Operation(
             summary = "Вернуть старые данные мастера по UUID",
@@ -31,7 +34,11 @@ public class MastersHistoryController extends BaseController {
     )
     @PatchMapping("/{id}")
     public HistoryMasterDTOResponse restore(@PathVariable("id") UUID id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp) {
-        return masterMapper.toDTO(masterService.restore(id, timestamp));
+        Master restored = masterService.restore(id, timestamp);
+
+        log.debug("Restored master: {}",  restored);
+
+        return masterHistoryMapper.toDTO(restored);
     }
 
     @Operation(
@@ -43,7 +50,7 @@ public class MastersHistoryController extends BaseController {
         return masterService
                 .readAllHistory()
                 .stream()
-                .map(masterMapper::toDTO)
+                .map(masterHistoryMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }
