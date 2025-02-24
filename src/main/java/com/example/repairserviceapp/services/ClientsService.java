@@ -4,6 +4,7 @@ import com.example.repairserviceapp.entities.Client;
 import com.example.repairserviceapp.entities.ClientHistory;
 import com.example.repairserviceapp.exceptions.EntityAlreadyExistsException;
 import com.example.repairserviceapp.exceptions.EntityNotFoundException;
+import com.example.repairserviceapp.mappers.ClientsMapper;
 import com.example.repairserviceapp.repos.ClientsHistoryRepo;
 import com.example.repairserviceapp.repos.ClientsRepo;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class ClientsService {
     private final ClientsRepo clientsRepo;
     private final ClientsHistoryRepo clientsHistoryRepo;
     private BCryptPasswordEncoder passwordEncoder;
+    private final ClientsMapper clientsMapper;
 
     public List<Client> readAll() {
         return clientsRepo.findAll();
@@ -80,7 +82,7 @@ public class ClientsService {
     }
 
     @Transactional
-    public ClientHistory restore(UUID clientId, OffsetDateTime timestamp) {
+    public Client restore(UUID clientId, OffsetDateTime timestamp) {
 
         ClientHistory historyClient = clientsHistoryRepo
                 .findByClientIdAndTimestamp(clientId, timestamp)
@@ -88,6 +90,8 @@ public class ClientsService {
                         "There is no client with this id " + clientId + " and this timestamp " + timestamp
                 ));
 
-        return clientsRepo.save(historyClient);
+        log.info("{}", clientsMapper.toClient(historyClient));
+
+        return clientsRepo.save(clientsMapper.toClient(historyClient));
     }
 }
