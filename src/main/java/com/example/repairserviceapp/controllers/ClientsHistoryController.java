@@ -18,7 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Tag(name = "Контроллер для управления историей клиентов", description = "Здесь реализуется свойство темпоральности")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @RestController
 @RequestMapping("/api/history/client")
 @AllArgsConstructor(onConstructor = @__(@Autowired))

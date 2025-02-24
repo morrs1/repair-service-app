@@ -7,6 +7,7 @@ import com.example.repairserviceapp.services.OrderOfComponentsService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class OrderOfComponentsController extends BaseController {
     private OrderOfComponentsMapper orderOfComponentsMapper;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public List<OrderOfComponentsDTOResponse> readAll() {
         return orderOfComponentsService
                 .readAll()
@@ -31,23 +33,27 @@ public class OrderOfComponentsController extends BaseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public OrderOfComponentsDTOResponse read(@PathVariable UUID id) {
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.read(id));
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public OrderOfComponentsDTOResponse create(@RequestBody @Valid OrderOfComponentsDTORequest dto, BindingResult bindingResult) {
         validate(bindingResult, "Create OrderOfComponents failed");
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.create(orderOfComponentsMapper.toOrderOfComponents(dto)));
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public OrderOfComponentsDTOResponse update(@PathVariable UUID id, @RequestBody @Valid OrderOfComponentsDTORequest dto, BindingResult bindingResult) {
         validate(bindingResult, "Update OrderOfComponents failed");
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.update(id, orderOfComponentsMapper.toOrderOfComponents(dto)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public OrderOfComponentsDTOResponse delete(@PathVariable UUID id) {
         return orderOfComponentsMapper.toDTO(orderOfComponentsService.delete(id));
     }

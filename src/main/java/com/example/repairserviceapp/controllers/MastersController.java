@@ -8,6 +8,7 @@ import com.example.repairserviceapp.services.MastersService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,16 +26,19 @@ public class MastersController extends BaseController {
     private final MasterMapper masterMapper;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public List<MasterDTOResponse> readAll() {
         return mastersService.readAll().stream().map(masterMapper::toMasterDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public MasterDTOResponse read(@PathVariable UUID id) {
         return masterMapper.toMasterDTO(mastersService.read(id));
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public MasterDTOResponse create(@RequestBody @Valid MasterDTORequest masterDTORequest, BindingResult bindingResult) {
         validate(bindingResult, "Create master failed");
         Master master = masterMapper.toMaster(masterDTORequest);
@@ -42,12 +46,14 @@ public class MastersController extends BaseController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public MasterDTOResponse update(@PathVariable UUID id, @RequestBody @Valid MasterDTORequest masterDTORequest, BindingResult bindingResult) {
         validate(bindingResult, "Update master failed");
         return masterMapper.toMasterDTO(mastersService.update(id, masterMapper.toMaster(masterDTORequest)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public MasterDTOResponse delete(@PathVariable UUID id) {
         return masterMapper.toMasterDTO(mastersService.delete(id));
     }

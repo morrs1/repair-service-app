@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class ComponentsWarehouseController extends BaseController {
     private ComponentsWarehouseMapper componentsWarehouseMapper;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public List<ComponentsWarehouseDTOResponse> readAll() {
         return componentsWarehouseService.readAll()
                 .stream()
@@ -33,6 +35,7 @@ public class ComponentsWarehouseController extends BaseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse read(
             @PathVariable("id") @Parameter(description = "Уникальный идентификатор набора компонентов на складе", required = true) UUID id
     ) {
@@ -40,6 +43,7 @@ public class ComponentsWarehouseController extends BaseController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse create(
             @RequestBody @Valid ComponentsWarehouseDTORequest componentsWarehouse,
             BindingResult bindingResult
@@ -53,6 +57,7 @@ public class ComponentsWarehouseController extends BaseController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse update(
             @PathVariable("id") UUID id,
             @RequestBody @Valid ComponentsWarehouseDTORequest componentsWarehouse,
@@ -63,6 +68,7 @@ public class ComponentsWarehouseController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse delete(@PathVariable("id") UUID id) {
         return componentsWarehouseMapper.toDTO(componentsWarehouseService.delete(id));
     }
