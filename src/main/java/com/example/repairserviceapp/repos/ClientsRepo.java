@@ -2,7 +2,6 @@ package com.example.repairserviceapp.repos;
 
 import com.example.repairserviceapp.entities.Client;
 import com.example.repairserviceapp.entities.ClientHistory;
-import com.example.repairserviceapp.entities.MasterHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
