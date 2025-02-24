@@ -36,7 +36,7 @@ public class ComponentsWarehouseHistoryController extends BaseController {
             @PathVariable("id") @Parameter(description = "Уникальный идентификатор оборудования", required = true) UUID id,
             @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) OffsetDateTime timestamp
     ) {
-        return componentsWarehouseMapper.toDTO(componentsWarehouseService.restore(id, timestamp));
+        return componentsWarehouseMapper.toHistoryDTO(componentsWarehouseService.restore(id, timestamp));
     }
 
     @Operation(
@@ -48,7 +48,7 @@ public class ComponentsWarehouseHistoryController extends BaseController {
         return componentsWarehouseService
                 .readAllHistory()
                 .stream()
-                .map(componentsWarehouseMapper::toDTO)
+                .map(componentsWarehouseMapper::toHistoryDTO)
                 .collect(Collectors.toList());
     }
 
