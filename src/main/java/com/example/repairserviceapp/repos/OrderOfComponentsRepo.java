@@ -18,9 +18,13 @@ public interface OrderOfComponentsRepo extends JpaRepository<OrderOfComponents, 
             VALUES (:#{#orderOfComponentsHistory.id},:#{#orderOfComponentsHistory.componentCode}, :#{#orderOfComponentsHistory.executionCode}, :#{#orderOfComponentsHistory.localDateRange})
             ON CONFLICT (co_code) DO UPDATE
             SET
-                component_code = :#{#orderOfComponentsHistory.componentCode},
-                execution_code = :#{#orderOfComponentsHistory.executionCode},
+                component_code = :#{#componentCode},
+                execution_code = :#{#executionCode},
                 sys_period = :#{#orderOfComponentsHistory.localDateRange}
             """, nativeQuery = true)
-    void syncOrderOfComponentsFromHistory(@Param("orderOfComponentsHistory") OrderOfComponentsHistory orderOfComponentsHistory);
+    void syncOrderOfComponentsFromHistory(
+            @Param("orderOfComponentsHistory") OrderOfComponentsHistory orderOfComponentsHistory,
+            @Param("componentCode") UUID componentCode,
+            @Param("executionCode") UUID executionCode
+    );
 }

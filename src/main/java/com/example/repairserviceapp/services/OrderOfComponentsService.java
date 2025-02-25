@@ -66,7 +66,11 @@ public class OrderOfComponentsService {
                         "There is no order with this id " + orderOfComponentId + " and this timestamp " + timestamp
                 ));
 
-        orderOfComponentsRepo.syncOrderOfComponentsFromHistory(historyOrder);
+        orderOfComponentsRepo.syncOrderOfComponentsFromHistory(
+                historyOrder,
+                historyOrder.getComponentCode(),
+                historyOrder.getExecutionCode()
+        );
 
         orderOfComponentsHistoryRepo.delete(historyOrder);
 
