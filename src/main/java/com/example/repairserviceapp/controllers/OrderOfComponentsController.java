@@ -4,6 +4,7 @@ import com.example.repairserviceapp.DTOs.orderOfComponents.OrderOfComponentsDTOR
 import com.example.repairserviceapp.DTOs.orderOfComponents.OrderOfComponentsDTOResponse;
 import com.example.repairserviceapp.mappers.OrderOfComponentsMapper;
 import com.example.repairserviceapp.services.OrderOfComponentsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name = "Контроллер для управления заказов компонентов", description = "Здесь есть все операции CRUD")
 @RestController
 @RequestMapping("/api/order-of-components")
 @AllArgsConstructor(onConstructor = @__(@Autowired))

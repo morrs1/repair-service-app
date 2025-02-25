@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Tag(name = "Контроллер для управления компонентами на складе", description = "Здесь реализуется свойство темпоральности")
+@Tag(name = "Контроллер для управления историей компонентов на складе", description = "Здесь реализуется свойство темпоральности")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @RestController
 @RequestMapping("/api/history/components-warehouse")

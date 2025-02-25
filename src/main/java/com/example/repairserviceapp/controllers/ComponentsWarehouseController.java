@@ -4,6 +4,7 @@ import com.example.repairserviceapp.DTOs.componentsWarehouse.ComponentsWarehouse
 import com.example.repairserviceapp.DTOs.componentsWarehouse.ComponentsWarehouseDTOResponse;
 import com.example.repairserviceapp.mappers.ComponentsWarehouseMapper;
 import com.example.repairserviceapp.services.ComponentsWarehouseService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class ComponentsWarehouseController extends BaseController {
     private ComponentsWarehouseService componentsWarehouseService;
     private ComponentsWarehouseMapper componentsWarehouseMapper;
 
+
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public List<ComponentsWarehouseDTOResponse> readAll() {
@@ -34,6 +36,10 @@ public class ComponentsWarehouseController extends BaseController {
                 .toList();
     }
 
+    @Operation(
+            summary = "Создание одного компонента на складе",
+            description = "Позволяет создать отдельный компонент на складе"
+    )
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse read(
@@ -42,6 +48,10 @@ public class ComponentsWarehouseController extends BaseController {
         return componentsWarehouseMapper.toDTO(componentsWarehouseService.read(id));
     }
 
+    @Operation(
+            summary = "Создание отдельного заказа на складе",
+            description = "Позволяет обновлять данные об отдельном заказе на складе, зная его id. "
+    )
     @PostMapping("")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse create(
@@ -56,6 +66,10 @@ public class ComponentsWarehouseController extends BaseController {
         );
     }
 
+    @Operation(
+            summary = "Обновление данных отдельного заказа на складе",
+            description = "Позволяет обновлять данные об отдельном заказе на складе, зная его id. "
+    )
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse update(
@@ -67,6 +81,10 @@ public class ComponentsWarehouseController extends BaseController {
         return componentsWarehouseMapper.toDTO(componentsWarehouseService.update(id, componentsWarehouseMapper.toEntity(componentsWarehouse)));
     }
 
+    @Operation(
+            summary = "Удаление данных об отдельном компоненте на складе",
+            description = "Позволяет удалять данные об отдельном компоненте на складе, зная его id"
+    )
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ComponentsWarehouseDTOResponse delete(@PathVariable("id") UUID id) {
