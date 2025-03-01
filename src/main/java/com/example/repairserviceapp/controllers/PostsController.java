@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,16 +26,19 @@ public class PostsController extends BaseController {
     private PostsMapper postsMapper;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public List<PostDTOResponse> readAll() {
         return postsService.readAll().stream().map(post -> postsMapper.toDTO(post)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public PostDTOResponse read(@PathVariable UUID id) {
         return postsMapper.toDTO(postsService.read(id));
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public PostDTOResponse create(@RequestBody @Valid PostDTORequest postDTORequest, BindingResult bindingResult) {
         validate(bindingResult, "Create post failed");
         log.info("Create post: {}", postDTORequest);
@@ -44,12 +48,14 @@ public class PostsController extends BaseController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public PostDTOResponse update(@PathVariable UUID id, @RequestBody @Valid PostDTORequest postDTO, BindingResult bindingResult) {
         validate(bindingResult, "Update post failed");
         return postsMapper.toDTO(postsService.update(id, postsMapper.toPost(postDTO)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public PostDTOResponse delete(@PathVariable UUID id) {
         return postsMapper.toDTO(postsService.delete(id));
     }
