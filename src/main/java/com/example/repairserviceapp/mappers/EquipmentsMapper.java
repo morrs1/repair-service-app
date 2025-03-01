@@ -1,5 +1,6 @@
 package com.example.repairserviceapp.mappers;
 
+import com.example.repairserviceapp.DTOs.equipment.EquipmentDTORequest;
 import com.example.repairserviceapp.DTOs.equipment.EquipmentDTOResponse;
 import com.example.repairserviceapp.DTOs.equipment.HistoryEquipmentDTOResponse;
 import com.example.repairserviceapp.entities.Equipment;
@@ -17,7 +18,7 @@ public abstract class EquipmentsMapper extends BaseMapper {
 
     public abstract EquipmentDTOResponse toDTO(Equipment equipment);
 
-    public abstract Equipment toEquipment(EquipmentDTOResponse equipmentDTOResponse);
+    public abstract Equipment toEquipment(EquipmentDTORequest equipmentDTORequest);
 
     @Mapping(target = "orders", expression = "java(equipment.getOrders().stream().map(orderMapper::toDTO).toList())")
     @Mapping(target = "offsetDateTime", expression = "java(convertTime(equipment.getLocalDateRange()))")
