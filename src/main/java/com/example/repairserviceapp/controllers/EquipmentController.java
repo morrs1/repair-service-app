@@ -7,6 +7,7 @@ import com.example.repairserviceapp.services.EquipmentsService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class EquipmentController extends BaseController {
     private EquipmentsService equipmentsService;
 
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public List<EquipmentDTOResponse> readAll() {
         return equipmentsService.readAll()
                 .stream()
@@ -31,23 +33,27 @@ public class EquipmentController extends BaseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public EquipmentDTOResponse read(@PathVariable UUID id) {
         return equipmentsMapper.toDTO(equipmentsService.read(id));
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public EquipmentDTOResponse create(@RequestBody @Valid EquipmentDTORequest equipmentDTO, BindingResult bindingResult) {
         validate(bindingResult, "Create equipment failed");
         return equipmentsMapper.toDTO(equipmentsService.create(equipmentsMapper.toEquipment(equipmentDTO)));
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public EquipmentDTOResponse update(@PathVariable UUID id, @RequestBody @Valid EquipmentDTORequest equipmentDTO, BindingResult bindingResult) {
         validate(bindingResult, "Update equipment failed");
         return equipmentsMapper.toDTO(equipmentsService.update(id, equipmentsMapper.toEquipment(equipmentDTO)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public EquipmentDTOResponse delete(@PathVariable UUID id) {
         return equipmentsMapper.toDTO(equipmentsService.delete(id));
     }
